@@ -1,0 +1,46 @@
+{
+  "realm": "lab",
+  "displayName": "Cluster Lab",
+  "enabled": true,
+  "registrationAllowed": false,
+  "resetPasswordAllowed": true,
+  "loginWithEmailAllowed": true,
+  "duplicateEmailsAllowed": false,
+  "editUsernameAllowed": false,
+  "sslRequired": "external",
+  "accessTokenLifespan": 60,
+  "ssoSessionIdleTimeout": 1800,
+  "ssoSessionMaxLifespan": 36000,
+  "bruteForceProtected": true,
+  "smtpServer": {
+    "host": "mailpit",
+    "port": "1025",
+    "from": "accounts@lab.test",
+    "fromDisplayName": "Cluster Lab",
+    "ssl": "false",
+    "starttls": "false",
+    "auth": "false"
+  },
+  "defaultRoles": [
+    "default-roles-lab"
+  ],
+  "roles": {
+    "realm": [
+      {
+        "name": "default-roles-lab",
+        "composite": true,
+        "composites": {
+          "client": {
+            "account": [
+              "manage-account",
+              "view-profile"
+            ],
+            "lab-identity-api": [
+              "app-user"
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

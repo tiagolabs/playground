@@ -1,0 +1,21 @@
+apiVersion: security.istio.io/v1
+kind: PeerAuthentication
+metadata: {name: redis-mtls, namespace: lab-identity}
+spec:
+  selector:
+    matchLabels: {app: redis}
+  mtls: {mode: STRICT}
+---
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata: {name: redis-backend-only, namespace: lab-identity}
+spec:
+  selector:
+    matchLabels: {app: redis}
+  action: ALLOW
+  rules:
+    - from:
+        - source:
+            principals: [cluster.local/ns/lab-identity/sa/lab-identity]
+      to:
+        - operation: {ports: ["6379"]}

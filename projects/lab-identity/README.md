@@ -1,0 +1,47 @@
+# Lab Identity
+
+Manage lab accounts, your profile, and explicit access to Hero Association and future applications. Open https://identity.lab.test. The study administrator is `lab-admin` / `lab-admin`.
+
+Shared cluster bootstrap: [infra runbook](../../infra/README.md). Behavior: [SPEC](SPEC.md). Try the full account/access journey in [manual testing](MANUAL_TEST.md).
+
+## Build and deploy
+
+From `hands-on/` after shared bootstrap:
+
+```bash
+infra/pipelines/lab-identity/build.sh
+infra/pipelines/lab-identity/deploy.sh
+```
+
+Backend only, with Java 25:
+
+```bash
+cd projects/lab-identity/backend
+./mvnw --batch-mode verify
+```
+
+Frontend only, with Node 24:
+
+```bash
+cd projects/lab-identity/frontend
+npm ci
+npm run build
+```
+
+Backend tests use a private mock Keycloak and OIDC test identities; they need no running cluster. Actual sign-in, cookies, SSO, and mail use the browser test against the deployed lab. The backend uses server-side Redis sessions and a restricted server-only Keycloak client. No application account database is required.
+
+For development, port-forward shared Keycloak to 17180 and project Redis to 16380, then export the four ignored `LAB_IDENTITY_*` secret files under `infra/.local/identity/`. Start `./mvnw quarkus:dev` on 17280 and `npm run dev` on 15173. Browser login remains on the registered HTTPS URL; use the deployed frontend for the full OIDC flow.
+
+Jenkins jobs `lab-identity-worktree` and `lab-identity-deploy` run on the [shared local controller](../../infra/ci/jenkins/README.md). Build jobs do not deploy. Deploy jobs validate and record candidates before promotion.
+
+## Browser verification
+
+After deploying both applications:
+
+```bash
+cd projects/lab-identity/e2e
+npm ci
+npm test
+```
+
+The tests use the public study fixtures and validate real SSO, profile/catalogue access, admin denial, and mandatory CSRF. Browser automation accepts the development certificate; verify OS trust separately with curl. The manual guide includes account creation and password action emails.

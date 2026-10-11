@@ -1,0 +1,10 @@
+/infra/.local/
+/infra/ci/jenkins/.env
+/infra/ci/jenkins/agent.env
+/infra/ci/jenkins/.agent-secret*
+/infra/ci/jenkins/agent.jar*
+/projects/lab-identity/backend/target/
+/projects/lab-identity/frontend/node_modules/
+/projects/lab-identity/frontend/dist/
+/projects/lab-identity/e2e/node_modules/
+/projects/lab-identity/e2e/test-results/

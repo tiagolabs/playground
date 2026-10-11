@@ -1,10 +1,14 @@
-# Hero Association
+# Hands-on projects
 
-An open-source game-management platform where players run hero agencies,
-recruit and equip heroes, send parties on quests, and manage their growth. It
-is in the early stages of development.
+Study applications share a local Kubernetes lab while keeping their deployments and access separate.
+Source projects live in `projects/`; shared infrastructure, deployment configuration, and CI live in `infra/`.
 
-Local development: [k3d and WSL hot reload](hero-association/LOCAL_DEVELOPMENT.md).
-Architecture and plans: [Hero Association docs](hero-association/SPEC.md).
-Reusable local builds: [pipeline](hero-association/pipeline/README.md).
-Videos: [Youtube](https://www.youtube.com/@TiagoVibesOn).
+- [Shared infrastructure](infra/README.md): `cluster-lab`, HTTPS, Gateway, Istio, Keycloak, observability, and Jenkins.
+- [Lab Identity](projects/lab-identity/README.md): accounts, profiles, and explicit application access.
+- [Hero Association](projects/hero-association/SPEC.md): agency management, heroes, dungeons, and markets.
+- [Pix Integration](projects/pix-integration/README.md): planned study application; identity registration is prepared.
+- [Workspace conventions](instructions/README.md).
+
+The lab uses `127.0.0.2:443`. Raydow can continue running on `127.0.0.1:443`.
+
+Videos: [YouTube](https://www.youtube.com/@TiagoVibesOn).

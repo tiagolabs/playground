@@ -1,0 +1,511 @@
+{
+  "realm": "hero-association",
+  "displayName": "Hero Association",
+  "enabled": true,
+  "registrationAllowed": true,
+  "registrationEmailAsUsername": true,
+  "loginWithEmailAllowed": true,
+  "duplicateEmailsAllowed": false,
+  "resetPasswordAllowed": true,
+  "rememberMe": true,
+  "verifyEmail": false,
+  "sslRequired": "external",
+  "loginTheme": "hero-association",
+  "users": [
+    {
+      "id": "019c4c00-0100-7000-8000-000000000001",
+      "username": "user1@mail.com",
+      "email": "user1@mail.com",
+      "firstName": "User1",
+      "lastName": "Last1",
+      "emailVerified": true,
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "user1",
+          "temporary": false
+        }
+      ],
+      "clientRoles": {
+        "hero-association": [
+          "app-user"
+        ]
+      }
+    },
+    {
+      "id": "019c4c00-0100-7000-8000-000000000002",
+      "username": "user2@mail.com",
+      "email": "user2@mail.com",
+      "firstName": "User2",
+      "lastName": "Last2",
+      "emailVerified": true,
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "user2",
+          "temporary": false
+        }
+      ],
+      "clientRoles": {
+        "hero-association": [
+          "app-user"
+        ]
+      }
+    },
+    {
+      "id": "019c4c00-0100-7000-8000-000000000003",
+      "username": "user3@mail.com",
+      "email": "user3@mail.com",
+      "firstName": "User3",
+      "lastName": "Last3",
+      "emailVerified": true,
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "user3",
+          "temporary": false
+        }
+      ],
+      "clientRoles": {
+        "hero-association": [
+          "app-user"
+        ]
+      }
+    },
+    {
+      "id": "019c4c00-0100-7000-8000-000000000101",
+      "username": "manager1@mail.com",
+      "email": "manager1@mail.com",
+      "firstName": "Manager1",
+      "lastName": "Last1",
+      "emailVerified": true,
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "manager1",
+          "temporary": false
+        }
+      ],
+      "clientRoles": {
+        "hero-association": [
+          "app-user"
+        ]
+      }
+    },
+    {
+      "id": "019c4c00-0100-7000-8000-000000000102",
+      "username": "manager2@mail.com",
+      "email": "manager2@mail.com",
+      "firstName": "Manager2",
+      "lastName": "Last2",
+      "emailVerified": true,
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "manager2",
+          "temporary": false
+        }
+      ],
+      "clientRoles": {
+        "hero-association": [
+          "app-user"
+        ]
+      }
+    },
+    {
+      "id": "019c4c00-0100-7000-8000-000000000103",
+      "username": "manager3@mail.com",
+      "email": "manager3@mail.com",
+      "firstName": "Manager3",
+      "lastName": "Last3",
+      "emailVerified": true,
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "manager3",
+          "temporary": false
+        }
+      ],
+      "clientRoles": {
+        "hero-association": [
+          "app-user"
+        ]
+      }
+    },
+    {
+      "id": "019c4c00-0100-7000-8000-000000000104",
+      "username": "manager4@mail.com",
+      "email": "manager4@mail.com",
+      "firstName": "Manager4",
+      "lastName": "Last4",
+      "emailVerified": true,
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "manager4",
+          "temporary": false
+        }
+      ],
+      "clientRoles": {
+        "hero-association": [
+          "app-user"
+        ]
+      }
+    },
+    {
+      "id": "019c4c00-0100-7000-8000-000000000105",
+      "username": "manager5@mail.com",
+      "email": "manager5@mail.com",
+      "firstName": "Manager5",
+      "lastName": "Last5",
+      "emailVerified": true,
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "manager5",
+          "temporary": false
+        }
+      ],
+      "clientRoles": {
+        "hero-association": [
+          "app-user"
+        ]
+      }
+    },
+    {
+      "id": "019c4c00-0100-7000-8000-000000000106",
+      "username": "manager6@mail.com",
+      "email": "manager6@mail.com",
+      "firstName": "Manager6",
+      "lastName": "Last6",
+      "emailVerified": true,
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "manager6",
+          "temporary": false
+        }
+      ],
+      "clientRoles": {
+        "hero-association": [
+          "app-user"
+        ]
+      }
+    },
+    {
+      "id": "019c4c00-0100-7000-8000-000000000107",
+      "username": "manager7@mail.com",
+      "email": "manager7@mail.com",
+      "firstName": "Manager7",
+      "lastName": "Last7",
+      "emailVerified": true,
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "manager7",
+          "temporary": false
+        }
+      ],
+      "clientRoles": {
+        "hero-association": [
+          "app-user"
+        ]
+      }
+    },
+    {
+      "id": "019c4c00-0100-7000-8000-000000000108",
+      "username": "manager8@mail.com",
+      "email": "manager8@mail.com",
+      "firstName": "Manager8",
+      "lastName": "Last8",
+      "emailVerified": true,
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "manager8",
+          "temporary": false
+        }
+      ],
+      "clientRoles": {
+        "hero-association": [
+          "app-user"
+        ]
+      }
+    },
+    {
+      "id": "019c4c00-0100-7000-8000-000000000109",
+      "username": "manager9@mail.com",
+      "email": "manager9@mail.com",
+      "firstName": "Manager9",
+      "lastName": "Last9",
+      "emailVerified": true,
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "manager9",
+          "temporary": false
+        }
+      ],
+      "clientRoles": {
+        "hero-association": [
+          "app-user"
+        ]
+      }
+    },
+    {
+      "id": "019c4c00-0100-7000-8000-000000000110",
+      "username": "manager10@mail.com",
+      "email": "manager10@mail.com",
+      "firstName": "Manager10",
+      "lastName": "Last10",
+      "emailVerified": true,
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "manager10",
+          "temporary": false
+        }
+      ],
+      "clientRoles": {
+        "hero-association": [
+          "app-user"
+        ]
+      }
+    }
+  ],
+  "components": {
+    "org.keycloak.userprofile.UserProfileProvider": [
+      {
+        "providerId": "declarative-user-profile",
+        "subType": "org.keycloak.userprofile.UserProfileProvider",
+        "config": {
+          "kc.user.profile.config": [
+            "{\"attributes\":[{\"name\":\"username\",\"displayName\":\"${username}\",\"validations\":{\"length\":{\"min\":3,\"max\":255},\"username-prohibited-characters\":{},\"up-username-not-idn-homograph\":{}},\"permissions\":{\"view\":[\"admin\",\"user\"],\"edit\":[\"admin\",\"user\"]},\"multivalued\":false},{\"name\":\"email\",\"displayName\":\"${email}\",\"validations\":{\"email\":{},\"length\":{\"max\":255}},\"required\":{\"roles\":[\"user\"]},\"permissions\":{\"view\":[\"admin\",\"user\"],\"edit\":[\"admin\",\"user\"]},\"multivalued\":false},{\"name\":\"firstName\",\"displayName\":\"${firstName}\",\"validations\":{\"length\":{\"max\":255},\"person-name-prohibited-characters\":{}},\"permissions\":{\"view\":[\"admin\"],\"edit\":[\"admin\"]},\"multivalued\":false},{\"name\":\"lastName\",\"displayName\":\"${lastName}\",\"validations\":{\"length\":{\"max\":255},\"person-name-prohibited-characters\":{}},\"permissions\":{\"view\":[\"admin\"],\"edit\":[\"admin\"]},\"multivalued\":false}],\"groups\":[]}"
+          ]
+        }
+      }
+    ]
+  },
+  "clients": [
+    {
+      "clientId": "hero-association-core",
+      "name": "Hero Association Game Core",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": false,
+      "standardFlowEnabled": false,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": false
+    },
+    {
+      "clientId": "hero-association-expedition",
+      "name": "Hero Association Expedition",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": false,
+      "standardFlowEnabled": false,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": false
+    },
+    {
+      "clientId": "hero-association-market",
+      "name": "Hero Association Expedition",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": false,
+      "standardFlowEnabled": false,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": false
+    },
+    {
+      "clientId": "hero-association-bff",
+      "name": "Hero Association BFF",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": false,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "${HERO_ASSOCIATION_BFF_OIDC_CLIENT_SECRET}",
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": false,
+      "redirectUris": [
+        "http://localhost:17080/auth/callback",
+        "http://localhost:17080/auth/post-logout",
+        "http://localhost:19080/auth/callback",
+        "http://localhost:19080/auth/post-logout",
+        "http://localhost:18080/auth/callback",
+        "http://localhost:18080/auth/post-logout",
+        "http://host.docker.internal:15173/auth/callback",
+        "http://host.docker.internal:15173/auth/post-logout",
+        "https://heroassociation.test/auth/callback",
+        "https://heroassociation.test/auth/post-logout"
+      ],
+      "webOrigins": [
+        "http://localhost:17080",
+        "http://localhost:19080",
+        "http://localhost:18080",
+        "http://host.docker.internal:15173",
+        "https://heroassociation.test"
+      ],
+      "attributes": {
+        "pkce.code.challenge.method": "S256",
+        "post.logout.redirect.uris": "+"
+      },
+      "protocolMappers": [
+        {
+          "name": "hero-association-core-audience",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "consentRequired": false,
+          "config": {
+            "included.client.audience": "hero-association-core",
+            "id.token.claim": "false",
+            "access.token.claim": "true",
+            "introspection.token.claim": "true"
+          }
+        },
+        {
+          "name": "hero-association-expedition-audience",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "consentRequired": false,
+          "config": {
+            "included.client.audience": "hero-association-expedition",
+            "id.token.claim": "false",
+            "access.token.claim": "true",
+            "introspection.token.claim": "true"
+          }
+        },
+        {
+          "name": "hero-association-market-audience",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "consentRequired": false,
+          "config": {
+            "included.client.audience": "hero-association-market",
+            "id.token.claim": "false",
+            "access.token.claim": "true",
+            "introspection.token.claim": "true"
+          }
+        },
+        {
+          "name": "hero-association-assets-audience",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "consentRequired": false,
+          "config": {
+            "included.client.audience": "hero-association-assets",
+            "id.token.claim": "false",
+            "access.token.claim": "true",
+            "introspection.token.claim": "true"
+          }
+        },
+        {
+          "name": "hero-association-world-audience",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "consentRequired": false,
+          "config": {
+            "included.client.audience": "hero-association-world",
+            "id.token.claim": "false",
+            "access.token.claim": "true",
+            "introspection.token.claim": "true"
+          }
+        },
+        {
+          "name": "hero-association-quest-audience",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "consentRequired": false,
+          "config": {
+            "included.client.audience": "hero-association-quest",
+            "id.token.claim": "false",
+            "access.token.claim": "true",
+            "introspection.token.claim": "true"
+          }
+        }
+      ]
+    },
+    {
+      "clientId": "hero-association-assets",
+      "name": "Hero Association Assets",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": false,
+      "standardFlowEnabled": false,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": false
+    },
+    {
+      "clientId": "hero-association-world",
+      "name": "Hero Association World",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": false,
+      "standardFlowEnabled": false,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": false
+    },
+    {
+      "clientId": "hero-association-quest",
+      "name": "Hero Association Quest",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": false,
+      "standardFlowEnabled": false,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": false
+    },
+    {
+      "clientId": "hero-association",
+      "protocol": "openid-connect",
+      "bearerOnly": true,
+      "enabled": true
+    }
+  ],
+  "roles": {
+    "client": {
+      "hero-association": [
+        {
+          "name": "app-user"
+        }
+      ]
+    },
+    "realm": [
+      {
+        "name": "default-roles-hero-association",
+        "composite": true,
+        "composites": {
+          "client": {
+            "hero-association": [
+              "app-user"
+            ]
+          }
+        }
+      }
+    ]
+  },
+  "defaultRoles": [
+    "default-roles-hero-association"
+  ]
+}

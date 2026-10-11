@@ -1,0 +1,116 @@
+package io.tiagovibeson.heroassociation.api.v1.account;
+
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.everyItem;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.UUID;
+
+import io.quarkus.test.junit.QuarkusTest;
+import io.quarkus.test.security.TestSecurity;
+import io.restassured.http.ContentType;
+import io.tiagovibeson.heroassociation.repository.HeroRepository;
+import io.tiagovibeson.heroassociation.repository.PartyRepository;
+import jakarta.inject.Inject;
+import org.junit.jupiter.api.Test;
+
+@QuarkusTest
+@TestSecurity(user = "onboarding-player", roles = "app-user")
+class AccountControllerTest {
+
+    @Inject
+    PartyRepository partyRepository;
+
+    @Inject
+    HeroRepository heroRepository;
+
+    @Test
+    void shouldProvisionAnAccountAndCreateItsManager() {
+        String accountId = given()
+                .when().get("/api/v1/account")
+                .then()
+                .statusCode(200)
+                .body("keycloakSubject", is("onboarding-player"))
+                .body("status", is("ACTIVE"))
+                .body("manager", is(org.hamcrest.Matchers.nullValue()))
+                .extract().path("id");
+
+        String managerId = given()
+                .contentType(ContentType.JSON)
+                .body("{\"displayName\":\"Wayfinder\"}")
+                .when().post("/api/v1/account/manager")
+                .then()
+                .statusCode(200)
+                .body("id", is(accountId))
+                .body("manager.id", notNullValue())
+                .body("manager.displayName", is("Wayfinder"))
+                .body("manager.gold", is(0))
+                .body("manager.heroes.size()", is(3))
+                .body("manager.heroes.heroClass", containsInAnyOrder("WARRIOR", "MAGE", "ARCHER"))
+                .body("manager.heroes.level", everyItem(is(1)))
+                .body("manager.heroes.meleeLevel", everyItem(is(1)))
+                .body("manager.heroes.distanceLevel", everyItem(is(1)))
+                .body("manager.heroes.magicLevel", everyItem(is(1)))
+                .body("manager.heroes.shieldLevel", everyItem(is(1)))
+                .body("manager.items.size()", is(0))
+                .body("manager.runes.size()", is(0))
+                .extract().path("manager.id");
+        UUID managerUuid = UUID.fromString(managerId);
+        assertEquals(1, partyRepository.count("ownerManager.id = ?1 and agency is null", managerUuid));
+        assertEquals(3, heroRepository.count("ownerManager.id = ?1 and party.ownerManager.id = ?1", managerUuid));
+
+        given()
+                .when().get("/api/v1/account")
+                .then()
+                .statusCode(200)
+                .body("id", is(accountId))
+                .body("manager.displayName", is("Wayfinder"))
+                .body("manager.heroes.size()", is(3));
+    }
+
+    @Test
+    @TestSecurity(user = "repeat-manager-player", roles = "app-user")
+    void shouldRejectCreatingAnotherManagerForTheSameAccount() {
+        given()
+                .contentType(ContentType.JSON)
+                .body("{\"displayName\":\"Repeat Manager\"}")
+                .when().post("/api/v1/account/manager")
+                .then()
+                .statusCode(200);
+
+        given()
+                .contentType(ContentType.JSON)
+                .body("{\"displayName\":\"Another Wayfinder\"}")
+                .when().post("/api/v1/account/manager")
+                .then()
+                .statusCode(409)
+                .body("message", is("This account has already completed manager onboarding."));
+    }
+
+    @Test
+    @TestSecurity(user = "different-onboarding-player", roles = "app-user")
+    void shouldRejectAnExistingManagerDisplayNameWithoutCaseSensitivity() {
+        given()
+                .contentType(ContentType.JSON)
+                .body("{\"displayName\":\"user 1\"}")
+                .when().post("/api/v1/account/manager")
+                .then()
+                .statusCode(409)
+                .body("message", is("The manager display name user 1 is already in use."));
+    }
+
+    @Test
+    @TestSecurity(user = "invalid-manager-name-player", roles = "app-user")
+    void shouldRejectAnInvalidManagerDisplayName() {
+        given()
+                .contentType(ContentType.JSON)
+                .body("{\"displayName\":\"  \"}")
+                .when().post("/api/v1/account/manager")
+                .then()
+                .statusCode(400)
+                .body("message", is("A manager display name must contain between 3 and 100 characters."));
+    }
+}

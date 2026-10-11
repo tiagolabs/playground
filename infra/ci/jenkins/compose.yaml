@@ -1,0 +1,22 @@
+name: cluster-lab-ci
+
+services:
+  jenkins:
+    build: .
+    image: cluster-lab-jenkins:local
+    restart: "no"
+    ports:
+      - "127.0.0.1:15180:8080"
+    env_file:
+      - .env
+    environment:
+      CASC_JENKINS_CONFIG: /var/jenkins_config/jenkins.yaml
+      JAVA_OPTS: -Djenkins.install.runSetupWizard=false
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - ./jenkins.yaml:/var/jenkins_config/jenkins.yaml:ro
+      - ./jobs/hero-association.groovy:/var/jenkins_jobs/hero-association.groovy:ro
+      - ./jobs/lab-identity.groovy:/var/jenkins_jobs/lab-identity.groovy:ro
+
+volumes:
+  jenkins_home:

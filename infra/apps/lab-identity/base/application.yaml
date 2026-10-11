@@ -1,0 +1,102 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata: {name: lab-identity, namespace: lab-identity}
+automountServiceAccountToken: false
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: backend, namespace: lab-identity}
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: backend}
+  template:
+    metadata:
+      labels: {app: backend}
+    spec:
+      serviceAccountName: lab-identity
+      containers:
+        - name: backend
+          image: lab-identity-backend:local
+          imagePullPolicy: Never
+          envFrom:
+            - secretRef: {name: lab-identity-credentials}
+          env:
+            - {name: LAB_KEYCLOAK_URL, value: "http://keycloak.identity.svc.cluster.local:8080"}
+            - {name: LAB_IDENTITY_REDIS_URL, value: "redis://redis:6379"}
+            - {name: LAB_OTLP_ENDPOINT, value: "http://otel-lgtm.observability.svc.cluster.local:4317"}
+            - {name: LAB_OTEL_DISABLED, value: "false"}
+          ports: [{name: http, containerPort: 8080}]
+          startupProbe: {httpGet: {path: /q/health/started, port: http}, failureThreshold: 30, periodSeconds: 5}
+          readinessProbe: {httpGet: {path: /q/health/ready, port: http}}
+          livenessProbe: {httpGet: {path: /q/health/live, port: http}}
+          resources:
+            requests: {cpu: 100m, memory: 192Mi}
+            limits: {memory: 512Mi}
+          securityContext: {allowPrivilegeEscalation: false, capabilities: {drop: [ALL]}}
+---
+apiVersion: v1
+kind: Service
+metadata: {name: backend, namespace: lab-identity}
+spec:
+  selector: {app: backend}
+  ports: [{name: http, port: 8080, targetPort: http}]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: frontend, namespace: lab-identity}
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: frontend}
+  template:
+    metadata:
+      labels: {app: frontend}
+    spec:
+      automountServiceAccountToken: false
+      containers:
+        - name: frontend
+          image: lab-identity-frontend:local
+          imagePullPolicy: Never
+          ports: [{name: http, containerPort: 8080}]
+          readinessProbe: {httpGet: {path: /, port: http}}
+          resources:
+            requests: {cpu: 20m, memory: 32Mi}
+            limits: {memory: 128Mi}
+          securityContext: {allowPrivilegeEscalation: false, capabilities: {drop: [ALL]}}
+---
+apiVersion: v1
+kind: Service
+metadata: {name: frontend, namespace: lab-identity}
+spec:
+  selector: {app: frontend}
+  ports: [{name: http, port: 8080, targetPort: http}]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: redis, namespace: lab-identity}
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: redis}
+  template:
+    metadata:
+      labels: {app: redis}
+    spec:
+      automountServiceAccountToken: false
+      containers:
+        - name: redis
+          image: redis:8.4.1-alpine
+          args: [redis-server, --save, "", --appendonly, "no", --maxmemory, 96mb, --maxmemory-policy, allkeys-lru]
+          ports: [{name: tcp, containerPort: 6379}]
+          readinessProbe: {exec: {command: [redis-cli, ping]}}
+          resources:
+            requests: {cpu: 20m, memory: 64Mi}
+            limits: {memory: 128Mi}
+---
+apiVersion: v1
+kind: Service
+metadata: {name: redis, namespace: lab-identity}
+spec:
+  selector: {app: redis}
+  ports: [{name: tcp, port: 6379, targetPort: tcp}]

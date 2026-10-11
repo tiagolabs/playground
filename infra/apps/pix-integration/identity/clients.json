@@ -1,0 +1,25 @@
+{
+  "clients": [
+    {
+      "clientId": "pix-integration",
+      "name": "Pix Integration (planned)",
+      "protocol": "openid-connect",
+      "enabled": true,
+      "bearerOnly": true,
+      "fullScopeAllowed": false
+    }
+  ],
+  "roles": {
+    "pix-integration": [
+      {
+        "name": "app-user",
+        "description": "Use Pix Integration"
+      },
+      {
+        "name": "operator",
+        "description": "Operate Pix study workflows"
+      }
+    ]
+  },
+  "scopeMappings": {}
+}

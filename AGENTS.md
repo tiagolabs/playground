@@ -1,10 +1,13 @@
-# Hero Association repository instructions
+# Hands-on workspace instructions
 
-- Work on the backend in `hero-association/backend`.
+- Shared instructions are in `instructions/README.md`.
+- Shared cluster and platform infrastructure belongs in `infra/`.
+- Application source, Dockerfiles, build definitions, and application tests belong in `projects/<project>/`.
+- Application deployment configuration belongs in `infra/apps/<application>/`; CI and delivery runners belong in `infra/ci/` and `infra/pipelines/`.
 - Use English for source code, documentation, comments, and generated content.
-- Keep the backend independently buildable and runnable.
-- For behavior-changing work, read and update `hero-association/SPEC.md`.
-- Keep `hero-association/backend/README.md` aligned with supported workflows.
+- Keep each backend independently buildable and runnable.
+- For behavior-changing work, read and update the affected project's `SPEC.md`.
+- Keep project READMEs aligned with supported workflows.
 - Run relevant checks and report their results.
 - Do not commit, push, tag, or publish GitHub Releases.
 

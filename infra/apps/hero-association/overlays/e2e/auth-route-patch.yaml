@@ -1,0 +1,10 @@
+- op: replace
+  path: /spec/parentRefs
+  value:
+    - name: cluster-lab
+      namespace: gateway-system
+      sectionName: e2e-auth
+- op: replace
+  path: /spec/hostnames
+  value:
+    - auth.e2e.heroassociation.test

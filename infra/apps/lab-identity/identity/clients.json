@@ -1,0 +1,99 @@
+{
+  "clients": [
+    {
+      "clientId": "lab-identity",
+      "name": "Lab Identity sign-in",
+      "protocol": "openid-connect",
+      "enabled": true,
+      "publicClient": false,
+      "secret": "${LAB_IDENTITY_OIDC_CLIENT_SECRET}",
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": false,
+      "fullScopeAllowed": false,
+      "redirectUris": [
+        "https://identity.lab.test/auth/callback",
+        "https://identity.lab.test/"
+      ],
+      "webOrigins": [
+        "https://identity.lab.test"
+      ],
+      "attributes": {
+        "post.logout.redirect.uris": "https://identity.lab.test/auth/post-logout",
+        "pkce.code.challenge.method": "S256"
+      },
+      "defaultClientScopes": [
+        "profile",
+        "email",
+        "roles"
+      ],
+      "protocolMappers": [
+        {
+          "name": "audience-lab-identity-api",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "config": {
+            "included.client.audience": "lab-identity-api",
+            "access.token.claim": "true",
+            "id.token.claim": "false"
+          }
+        }
+      ]
+    },
+    {
+      "clientId": "lab-identity-api",
+      "name": "Lab Identity application access",
+      "protocol": "openid-connect",
+      "enabled": true,
+      "bearerOnly": true,
+      "fullScopeAllowed": false
+    },
+    {
+      "clientId": "lab-identity-admin",
+      "name": "Lab Identity user administration service",
+      "protocol": "openid-connect",
+      "enabled": true,
+      "publicClient": false,
+      "secret": "${LAB_IDENTITY_ADMIN_CLIENT_SECRET}",
+      "standardFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": true,
+      "fullScopeAllowed": false,
+      "defaultClientScopes": [
+        "roles"
+      ]
+    }
+  ],
+  "roles": {
+    "lab-identity-api": [
+      {
+        "name": "app-user",
+        "description": "Use Lab Identity self-service"
+      },
+      {
+        "name": "identity-admin",
+        "description": "Manage lab users and application access"
+      }
+    ]
+  },
+  "scopeMappings": {
+    "lab-identity-api": [
+      {
+        "client": "lab-identity",
+        "roles": [
+          "app-user",
+          "identity-admin"
+        ]
+      }
+    ],
+    "realm-management": [
+      {
+        "client": "lab-identity-admin",
+        "roles": [
+          "manage-users",
+          "query-users",
+          "view-clients"
+        ]
+      }
+    ]
+  }
+}

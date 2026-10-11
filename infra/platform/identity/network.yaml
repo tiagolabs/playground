@@ -1,0 +1,12 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata: {name: keycloak-database, namespace: identity}
+spec:
+  podSelector:
+    matchLabels: {app: postgres-keycloak}
+  policyTypes: [Ingress]
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels: {app: keycloak}
+      ports: [{protocol: TCP, port: 5432}]

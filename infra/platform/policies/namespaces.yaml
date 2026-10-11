@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: gateway-system
+  labels:
+    lab.test/gateway: "true"
+
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: identity
+  labels:
+    lab.test/gateway: "true"
+
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: hero-association
+  labels:
+    lab.test/gateway: "true"
+    istio-injection: enabled
+
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: lab-identity
+  labels:
+    lab.test/gateway: "true"
+    istio-injection: enabled
+
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: pix-integration
+  labels:
+    lab.test/gateway: "true"
