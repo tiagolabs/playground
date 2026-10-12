@@ -30,7 +30,7 @@ npm run build
 
 Backend tests use a private mock Keycloak and OIDC test identities; they need no running cluster. Actual sign-in, cookies, SSO, and mail use the browser test against the deployed lab. The backend uses server-side Redis sessions and a restricted server-only Keycloak client. No application account database is required.
 
-For development, port-forward shared Keycloak to 17180 and project Redis to 16380, then export the four ignored `LAB_IDENTITY_*` secret files under `infra/.local/identity/`. Start `./mvnw quarkus:dev` on 17280 and `npm run dev` on 15173. Browser login remains on the registered HTTPS URL; use the deployed frontend for the full OIDC flow.
+For development, port-forward shared Keycloak to 17180 and project Redis to 16380, then export the four ignored `LAB_IDENTITY_*` secret files under `infra/.local/identity/`. Start `./mvnw quarkus:dev` on 17280 and `npm run dev` on 15174. The Vite server binds to `127.0.0.1` with strict port selection; Raydow's frontend retains 15173. Browser login remains on the registered HTTPS URL; use the deployed frontend for the full OIDC flow.
 
 Jenkins jobs `lab-identity-worktree` and `lab-identity-deploy` run on the [shared local controller](../../infra/ci/jenkins/README.md). Build jobs do not deploy. Deploy jobs validate and record candidates before promotion.
 

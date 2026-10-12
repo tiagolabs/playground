@@ -290,9 +290,9 @@ case "$service" in
     export HERO_ASSOCIATION_ASSETS_BASE_URL=http://127.0.0.1:18087
     export HERO_ASSOCIATION_ASSETS_CORE_SERVICE_KEY="$(secret_value hero-association-assets-credentials HERO_ASSOCIATION_ASSETS_CORE_SERVICE_KEY)"
     start_forward "$namespace" service/world 18089 8086
-    start_forward "$namespace" service/quest 18090 8087
+    start_forward "$namespace" service/quest 17390 8087
     export HERO_ASSOCIATION_WORLD_BASE_URL=http://127.0.0.1:18089
-    export HERO_ASSOCIATION_QUEST_BASE_URL=http://127.0.0.1:18090
+    export HERO_ASSOCIATION_QUEST_BASE_URL=http://127.0.0.1:17390
     export HERO_ASSOCIATION_WORLD_SERVICE_KEY="$(secret_value hero-association-world-credentials HERO_ASSOCIATION_WORLD_SERVICE_KEY)"
     export HERO_ASSOCIATION_QUEST_CORE_SERVICE_KEY="$(secret_value hero-association-quest-credentials HERO_ASSOCIATION_QUEST_CORE_SERVICE_KEY)"
     export HERO_ASSOCIATION_CORE_BOOTSTRAP_MODE=false
@@ -311,10 +311,10 @@ case "$service" in
     start_forward "$namespace" service/expedition 18083 8083
     start_forward "$namespace" service/market 18085 8084
     start_forward "$namespace" service/assets 18086 8085
-    start_forward "$namespace" service/world 18091 8086
-    start_forward "$namespace" service/quest 18092 8087
-    export HERO_ASSOCIATION_WORLD_BASE_URL=http://127.0.0.1:18091
-    export HERO_ASSOCIATION_QUEST_BASE_URL=http://127.0.0.1:18092
+    start_forward "$namespace" service/world 17391 8086
+    start_forward "$namespace" service/quest 17392 8087
+    export HERO_ASSOCIATION_WORLD_BASE_URL=http://127.0.0.1:17391
+    export HERO_ASSOCIATION_QUEST_BASE_URL=http://127.0.0.1:17392
     export HERO_ASSOCIATION_ASSETS_BASE_URL=http://127.0.0.1:18086
     export HERO_ASSOCIATION_MARKET_BASE_URL=http://127.0.0.1:18085
     export HERO_ASSOCIATION_CORE_BASE_URL=http://127.0.0.1:18081
@@ -362,10 +362,10 @@ case "$service" in
     if [[ "$service" == world ]]; then
       export HERO_ASSOCIATION_WORLD_SERVICE_KEY="$(secret_value hero-association-world-credentials HERO_ASSOCIATION_WORLD_SERVICE_KEY)"
     else
-      start_forward "$namespace" service/core 18093 8081
-      start_forward "$namespace" service/assets 18094 8085
-      export HERO_ASSOCIATION_CORE_BASE_URL=http://127.0.0.1:18093
-      export HERO_ASSOCIATION_ASSETS_BASE_URL=http://127.0.0.1:18094
+      start_forward "$namespace" service/core 17393 8081
+      start_forward "$namespace" service/assets 17394 8085
+      export HERO_ASSOCIATION_CORE_BASE_URL=http://127.0.0.1:17393
+      export HERO_ASSOCIATION_ASSETS_BASE_URL=http://127.0.0.1:17394
       export HERO_ASSOCIATION_QUEST_CORE_SERVICE_KEY="$(secret_value hero-association-quest-credentials HERO_ASSOCIATION_QUEST_CORE_SERVICE_KEY)"
       export HERO_ASSOCIATION_QUEST_EXPEDITION_SERVICE_KEY="$(secret_value hero-association-quest-credentials HERO_ASSOCIATION_QUEST_EXPEDITION_SERVICE_KEY)"
       export HERO_ASSOCIATION_ASSETS_QUEST_SERVICE_KEY="$(secret_value hero-association-quest-credentials HERO_ASSOCIATION_ASSETS_QUEST_SERVICE_KEY)"

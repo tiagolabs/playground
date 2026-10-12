@@ -470,6 +470,12 @@ IDs must not be added for entities or exposed through the API.
   Core-only and individual-service hybrid browser checks passed; Map,
   WebSocket, and market policy also passed. See
   [LOCAL_DEVELOPMENT.md](LOCAL_DEVELOPMENT.md).
+- Hybrid service-to-service loopback forwards use dedicated Lab allocations
+  where Raydow reserves host ports for remote development. Core's Quest forward,
+  BFF's World/Quest forwards, and Quest's Core/Assets forwards use `17390–17394`.
+  The launcher sets each caller's base URL to its matching local forward. This
+  port allocation does not require running both daily clusters; switching
+  projects still uses the shared cluster policy.
 - Core Quarkus dev mode validates the existing k3d PostgreSQL schema,
   disables SQL seed loading and bootstrap, and uses a distinct loopback
   port-forward. Only explicit reset/reseed commands discard disposable Core

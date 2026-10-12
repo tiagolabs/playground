@@ -108,6 +108,19 @@ runtime and does not write them into Git. Host-run Quarkus services disable
 Dev Services and export telemetry to the shared k3d collector; they do not
 launch a separate LGTM container.
 
+The following service-to-service forwards use Lab's dedicated `17390–17394`
+range. `18090–18094` are reserved by Raydow's Quarkus remote-development tooling.
+Each forward binds to `127.0.0.1`; the launcher supplies its matching upstream
+URL to the caller.
+
+| Host-run caller | Forwarded k3d service | Local port | Service port |
+| --- | --- | --- | --- |
+| Core | Quest | 17390 | 8087 |
+| BFF | World | 17391 | 8086 |
+| BFF | Quest | 17392 | 8087 |
+| Quest | Core | 17393 | 8081 |
+| Quest | Assets | 17394 | 8085 |
+
 When combining services, start dependencies before callers (for example,
 Expedition and Core before BFF). Switching a dependency while a host-run BFF
 is already serving may cause an in-flight or pooled request to fail once;
