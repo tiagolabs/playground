@@ -122,15 +122,15 @@ Run from `playground/`:
 
 ```bash
 infra/scripts/install-policies.sh
-infra/pipelines/lab-identity/build.sh
-infra/pipelines/lab-identity/deploy.sh
+infra/pipelines/lab-identity/build.sh study-001
+infra/pipelines/lab-identity/deploy.sh study-001
 infra/apps/hero-association/operations/hybrid.sh run frontend
 infra/tests/hero-association/test-isolated-components.sh all
 infra/tests/hero-association/test-isolated-stack.sh
 infra/tests/test-application-isolation.sh
 ```
 
-Hero's [operations](apps/hero-association/operations/README.md) and [delivery runbook](pipelines/hero-association/README.md) preserve its build-once eight-image archive, checksum, baseline, recovery, and explicit promotion gates. Lab Identity deployment checks recorded image IDs and its source/configuration digest. Generated artifacts and application credentials are in `.local/local/`; existing archived artifacts were retained during the move.
+Hero's [operations](apps/hero-association/operations/README.md) and [delivery runbook](pipelines/hero-association/README.md) preserve its build-once eight-image archive, checksum, baseline, recovery, and explicit promotion gates. [Lab Identity delivery](pipelines/lab-identity/README.md) retains tested candidates with image archives and rendered manifests; promotion selects an explicit candidate without rebuilding, pins its image digests, and records a previous success for rollback. Choose an unused candidate ID or omit the build argument to generate one. Generated artifacts and application credentials are in `.local/local/`; existing archived artifacts were retained during the move.
 
 Kustomize bases contain workloads; overlays select environment behavior; cluster compositions list the enabled configurations. Render with `kubectl kustomize infra/clusters/local/apps` or `infra/clusters/local/platform`. Use the guarded bootstrap and app runners for application: they prepare private Secrets and bootstrap fresh game databases in the required order. Applying the whole composition directly can overwrite promoted image references and omits these delivery gates.
 
@@ -143,7 +143,7 @@ with the operator, then deploy the verified candidate using that profile:
 
 ```bash
 infra/scripts/create-deployer-kubeconfig.sh lab-identity
-LAB_KUBECONFIG="$PWD/infra/.local/local/deployers/lab-identity.kubeconfig" infra/pipelines/lab-identity/deploy.sh
+LAB_KUBECONFIG="$PWD/infra/.local/local/deployers/lab-identity.kubeconfig" infra/pipelines/lab-identity/deploy.sh study-001
 ```
 
 The generated file contains only the scoped service-account token and cluster
@@ -158,8 +158,27 @@ shared identity configuration, and disposable test provisioning require the oper
 npm --prefix infra test
 infra/pipelines/shared/snapshot-worktree.test.sh
 infra/tests/test-application-isolation.sh
-k3d cluster stop tiagolabs-local
-k3d cluster start tiagolabs-local
+infra/scripts/lab.sh status
+infra/scripts/lab.sh check
+infra/scripts/lab.sh stop
+infra/scripts/lab.sh start
 ```
+
+`start` creates a missing cluster or resumes an existing stopped/partial cluster,
+refreshes only the canonical private operator kubeconfig, and waits for Ready
+nodes. It then starts an already configured Jenkins controller without building
+its image and starts the installed WSL agent. Initial platform bootstrap, host/CA
+setup, and Jenkins enrollment still use their dedicated setup commands. Startup
+does not deploy applications or rerun shared identity setup; run `check` once
+services have recovered. Repeating start/stop is safe and preserves stored data.
+
+`status` reports only this cluster's container counts and Jenkins state without
+printing k3d metadata or secrets. `check` is read-only and returns nonzero for
+failed readiness checks: explicit kubeconfig context, all three nodes, Gateway
+programming, identity/Lab Identity workloads, host DNS and OS-trusted HTTPS,
+Keycloak issuer, Jenkins controller, and connected WSL agent. It does not check
+Hero gameplay or the planned Pix application. `stop` stops this agent, controller,
+and cluster while retaining Docker volumes and private state. Lifecycle commands
+share a lock and always name this cluster; they never use `--all`.
 
 Platform scripts operate only on `tiagolabs-local`. Deleting it with `k3d cluster delete tiagolabs-local` destroys lab state and must be an explicit reset. Never stop/delete the Raydow cluster to free browser ports. The retired `hero-association` cluster was removed after migration verification.

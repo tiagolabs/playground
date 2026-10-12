@@ -39,4 +39,29 @@ Application source, build definitions, and tests live in
 
 Lab Identity's backend/frontend/Redis deployments, routes, mesh policies, identity declarations, and operations are versioned in `../../infra/apps/lab-identity/`, with an independent lab overlay. Jenkins jobs are declared in `../../infra/ci/jenkins/jobs/`. Platform policies supply its namespace, resource budget, network boundary, and namespace-scoped deployment role. Redis requires mesh mTLS from the backend service account. User APIs require both role and audience validation. Shared Keycloak/PostgreSQL, Gateway, mesh control plane, and telemetry are outside the project. Ordinary app deployment never resets shared users.
 
-`../../infra/pipelines/lab-identity/build.sh` verifies backend tests, creates frontend production assets, builds images, and records image IDs. Its source digest covers application code, deployment configuration, delivery scripts, and their shared path helpers. `deploy.sh` accepts only those verified image IDs and unchanged inputs, imports them into `tiagolabs-local`, and deploys them explicitly. Candidate records are ignored under `infra/.local/local/pipelines/lab-identity/`. Local mutable tags are guarded by recorded image IDs. A later build replaces the candidate record. Backend Maven and frontend npm builds remain independent of infra and a running cluster.
+`../../infra/pipelines/lab-identity/build.sh [candidate-id]` verifies backend tests,
+creates readable frontend production assets, and builds uniquely tagged images.
+Frontend asset/config readability is checked as the image's unprivileged user. Its source
+digest covers application code, deployment configuration, delivery scripts, and
+their shared helpers. Changes during validation reject the candidate. Each
+successful candidate retains a checksummed image archive and rendered deployment
+manifest under ignored `infra/.local/local/pipelines/lab-identity/candidates/`.
+Candidate IDs cannot be reused; later builds preserve previous candidates.
+
+`deploy.sh CANDIDATE_ID` promotes that tested archive without rebuilding or
+depending on current source or local tags. Workloads pin backend/frontend images
+by OCI digest. Preflight restricts manifests to the application namespace, and
+successful promotion requires rollout readiness and actual pod image digest
+verification. Credentials are loaded from current private state, never archived.
+Builds and deployments share a lock and require the explicit local cluster context.
+
+Deployment history preserves current and previous successful candidates and
+records a pending rollout before application changes. `deploy.sh rollback`
+restores the previous success, or the current success after a failed rollout.
+An unfinished rollout with an existing success blocks another candidate until
+retry or recovery succeeds. A failed first promotion can be replaced by a newly
+validated corrected candidate because no prior success exists to restore.
+The first success establishes the baseline. Application rollback does not roll
+back shared Keycloak data or users. Jenkins separates manual build, promotion
+with a required candidate ID, and rollback jobs. Backend Maven and frontend npm
+builds remain independent of infra and a running cluster.

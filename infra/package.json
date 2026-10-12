@@ -3,6 +3,6 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node --test --test-isolation=none scripts/*.test.mjs pipelines/hero-association/*.test.mjs pipelines/hero-association/*.test.js tests/hero-association/*.test.mjs"
+    "test": "node --test --test-isolation=none scripts/*.test.mjs pipelines/lab-identity/*.test.mjs pipelines/hero-association/*.test.mjs pipelines/hero-association/*.test.js tests/hero-association/*.test.mjs"
   }
 }
