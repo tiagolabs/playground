@@ -22,10 +22,10 @@ if (!assets || !audience || process.argv.length !== 2) {
   throw new Error('Usage: node sync-assets-realm.mjs (source realm must define Assets and its BFF audience)');
 }
 const context = execFileSync('kubectl', ['config', 'current-context'], { env, encoding: 'utf8' }).trim();
-if (context !== 'k3d-cluster-lab') {
-  throw new Error(`Refusing to change Keycloak outside k3d-cluster-lab (current: ${context})`);
+if (context !== 'k3d-tiagolabs-local') {
+  throw new Error(`Refusing to change Keycloak outside k3d-tiagolabs-local (current: ${context})`);
 }
-const password = (await readFile(resolve(infraDirectory, '.local/identity/KEYCLOAK_ADMIN_PASSWORD'), 'utf8')).trim();
+const password = (await readFile(resolve(infraDirectory, '.local/local/identity/KEYCLOAK_ADMIN_PASSWORD'), 'utf8')).trim();
 if (!password) throw new Error('Missing k3d Keycloak admin password');
 
 const forward = spawn('kubectl', [

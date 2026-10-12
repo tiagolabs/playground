@@ -5,7 +5,7 @@ metadata:
   namespace: identity
 spec:
   parentRefs:
-    - {name: cluster-lab, namespace: gateway-system, sectionName: https}
+    - {name: tiagolabs-local, namespace: gateway-system, sectionName: https}
   hostnames: [auth.lab.test]
   rules:
     - backendRefs:

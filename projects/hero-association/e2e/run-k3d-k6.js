@@ -9,8 +9,8 @@ const packageLock = JSON.parse(await readFile(path.join(e2eDirectory, 'package-l
 const playwrightVersion = packageLock.packages['node_modules/@playwright/test'].version
 const playwrightImage = `mcr.microsoft.com/playwright:v${playwrightVersion}-noble`
 const k6Image = 'grafana/k6:2.3.0'
-const gatewayIp = execFileSync('docker', ['inspect','k3d-cluster-lab-serverlb','--format','{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}'], {encoding:'utf8'}).trim()
-if (!/^([0-9]{1,3}\.){3}[0-9]{1,3}$/.test(gatewayIp)) throw new Error('Missing cluster-lab gateway address')
+const gatewayIp = execFileSync('docker', ['inspect','k3d-tiagolabs-local-serverlb','--format','{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}'], {encoding:'utf8'}).trim()
+if (!/^([0-9]{1,3}\.){3}[0-9]{1,3}$/.test(gatewayIp)) throw new Error('Missing tiagolabs-local gateway address')
 const hostMappings = [
   '--add-host', `heroassociation.test:${gatewayIp}`,
   '--add-host', `auth.lab.test:${gatewayIp}`,
@@ -29,14 +29,14 @@ function run(command, args, environment = process.env) {
 
 const sessionDirectory = await mkdtemp(path.join(tmpdir(), 'hero-association-k6-'))
 try {
-  const kubeconfig = process.env.LAB_KUBECONFIG || process.env.HERO_ASSOCIATION_K3D_KUBECONFIG || path.join(e2eDirectory, '../../../infra/.local/kubeconfig')
+  const kubeconfig = process.env.LAB_KUBECONFIG || process.env.HERO_ASSOCIATION_K3D_KUBECONFIG || path.join(e2eDirectory, '../../../infra/.local/local/kubeconfig')
   const kubectlEnvironment = { ...process.env, KUBECONFIG: kubeconfig }
   const context = execFileSync('kubectl', ['config', 'current-context'], {
     env: kubectlEnvironment,
     encoding: 'utf8',
   }).trim()
-  if (context !== 'k3d-cluster-lab') {
-    throw new Error(`Expected the isolated k3d-cluster-lab context, got ${context}`)
+  if (context !== 'k3d-tiagolabs-local') {
+    throw new Error(`Expected the isolated k3d-tiagolabs-local context, got ${context}`)
   }
   const readyReplicas = Number(execFileSync('kubectl', [
     '-n', 'hero-association', 'get', 'deployment', 'bff', '-o', 'jsonpath={.status.readyReplicas}',
@@ -47,7 +47,7 @@ try {
   console.log(`Testing ${readyReplicas} ready BFF Pods in ${context}.`)
   console.log('Target: market-order limit enforced solely by k3d Envoy. Core HTTP 400 only marks a forwarded invalid order.')
   const common = [
-    'run', '--rm', '--init', '--network', 'k3d-cluster-lab',
+    'run', '--rm', '--init', '--network', 'k3d-tiagolabs-local',
     ...hostMappings,
     '--user', `${process.getuid()}:${process.getgid()}`,
   ]

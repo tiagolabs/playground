@@ -21,7 +21,7 @@ foreach ($line in [System.IO.File]::ReadAllLines($path)) {
         $lines.Add($updated)
     } else { $lines.Add($line) }
 }
-$lines.Add('127.0.0.2 heroassociation.test identity.lab.test auth.lab.test pix.lab.test app.e2e.heroassociation.test auth.e2e.heroassociation.test # cluster-lab')
+$lines.Add('127.0.0.2 heroassociation.test identity.lab.test auth.lab.test pix.lab.test app.e2e.heroassociation.test auth.e2e.heroassociation.test # tiagolabs-local')
 [System.IO.File]::WriteAllLines($path, $lines, [System.Text.Encoding]::ASCII)
 Import-Certificate -FilePath $CertificatePath -CertStoreLocation Cert:\CurrentUser\Root | Out-Null
 ipconfig /flushdns | Out-Null

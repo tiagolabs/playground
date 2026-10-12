@@ -20,7 +20,7 @@ function digest() {
  return hash.digest('hex');
 }
 function images() {return Object.fromEntries(['backend','frontend'].map(component=>[component,execFileSync('docker',['image','inspect',`lab-identity-${component}:local`,'--format','{{.Id}}'],{encoding:'utf8'}).trim()]));}
-const path=resolve(infraDirectory,'.local/pipelines/lab-identity/candidate.json');
+const path=resolve(infraDirectory,'.local/local/pipelines/lab-identity/candidate.json');
 if(process.argv[2]==='digest')console.log(digest());
 else if(process.argv[2]==='record') {
  const sourceDigest=digest();if(sourceDigest!==process.argv[3])throw new Error('Lab Identity source changed during validation; rebuild the candidate');

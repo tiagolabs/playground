@@ -1,7 +1,9 @@
-# Hands-on workspace instructions
+# Playground workspace instructions
 
 - Shared instructions are in `instructions/README.md`.
 - Shared cluster and platform infrastructure belongs in `infra/`.
+- Versioned local cluster configuration belongs in `infra/clusters/local/`.
+- Generated private infrastructure state belongs in ignored `infra/.local/local/`; shared CLI caches belong in `infra/.local/tools/`.
 - Application source, Dockerfiles, build definitions, and application tests belong in `projects/<project>/`.
 - Application deployment configuration belongs in `infra/apps/<application>/`; CI and delivery runners belong in `infra/ci/` and `infra/pipelines/`.
 - Use English for source code, documentation, comments, and generated content.

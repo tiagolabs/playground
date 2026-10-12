@@ -69,7 +69,7 @@ services.each { service ->
               lock(resource: 'hero-association-main-promotion') {
                 node('wsl-local') {
                   deleteDir()
-                  git branch: 'main', url: 'https://github.com/tiago-vibes-on/hands-on.git', poll: false
+                  git branch: 'main', url: 'https://github.com/tiagolabs/playground.git', poll: false
                   if (fileExists('infra/pipelines/hero-association/jenkins/run-service-build.sh')) {
                     try {
                       sh 'bash infra/pipelines/hero-association/jenkins/run-service-build.sh main __SERVICE__'

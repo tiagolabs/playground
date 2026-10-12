@@ -11,7 +11,7 @@ pipelineJob('lab-identity-worktree') {
   } }
 }
 pipelineJob('lab-identity-deploy') {
-  description('Explicit promotion of locally tested Lab Identity images to cluster-lab.')
+  description('Explicit promotion of locally tested Lab Identity images to tiagolabs-local.')
   definition { cps {
     script('''pipeline {
       agent { label 'wsl-local' }

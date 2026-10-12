@@ -40,7 +40,7 @@ revision="$(git -C "$build_repo" rev-parse HEAD)"
 build_id="${mode}-${component}-${BUILD_NUMBER}-${revision:0:8}-$(date -u +%Y%m%dT%H%M%S)"
 project="$build_repo/projects/hero-association"
 artifact="$agent_workdir/artifacts/$build_id/all"
-candidate="$build_repo/infra/.local/pipelines/hero-association/artifacts/$build_id/$component"
+candidate="$build_repo/infra/.local/local/pipelines/hero-association/artifacts/$build_id/$component"
 evidence="$workspace/evidence"
 mkdir -p "$evidence"
 
@@ -52,7 +52,7 @@ node "$build_repo/infra/pipelines/hero-association/deploy-k3d.mjs" --verify-base
   cd "$project/e2e"
   npm ci
 )
-HERO_ASSOCIATION_LOCAL_CA_CERTIFICATE="${HERO_ASSOCIATION_LOCAL_CA_CERTIFICATE:-$source_repo/infra/.local/tls/local-ca.crt}" \
+HERO_ASSOCIATION_LOCAL_CA_CERTIFICATE="${HERO_ASSOCIATION_LOCAL_CA_CERTIFICATE:-$source_repo/infra/.local/local/tls/local-ca.crt}" \
   "$build_repo/infra/tests/hero-association/test-isolated-stack.sh" "$artifact"
 cp "$artifact/manifest.txt" "$artifact/k3d-e2e-verification.json" "$evidence/"
 printf 'artifact_id=%s\nsource_mode=%s\nsource_revision=%s\ncomponent=%s\n' \

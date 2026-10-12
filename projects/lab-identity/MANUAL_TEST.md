@@ -2,7 +2,7 @@
 
 1. Open https://identity.lab.test and sign in with `lab-admin` / `lab-admin`.
 2. Open **Users & access**, create a user with username, email, first name, and last name. Confirm only Lab Identity access is selected.
-3. Send its password reset email. Port-forward Mailpit with `kubectl --kubeconfig infra/.local/kubeconfig -n identity port-forward service/mailpit 18025:8025`, open http://localhost:18025, and follow the action link in a private browser. Set a password in Keycloak.
+3. Send its password reset email. Port-forward Mailpit with `kubectl --kubeconfig infra/.local/local/kubeconfig -n identity port-forward service/mailpit 18025:8025`, open http://localhost:18025, and follow the action link in a private browser. Set a password in Keycloak.
 4. Sign in as the new user. Confirm the Applications page shows Lab Identity access and Hero access required. User administration must be absent, and its API must return 403. Open **My profile**, then **Manage password and account security**; Keycloak's account console should reuse SSO.
 5. Visit https://heroassociation.test and sign in with the same account. Confirm **Hero Association access required**; a game account must not be provisioned.
 6. As the administrator, grant Hero Association. Sign the member in again, open Hero, and complete Manager and agency onboarding. The shared Keycloak subject now links to a project-owned game account.

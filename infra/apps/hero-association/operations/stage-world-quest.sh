@@ -5,7 +5,7 @@ umask 077
 script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 source "$script_dir/../../../scripts/application.sh" hero-association
 export KUBECONFIG="${HERO_ASSOCIATION_K3D_KUBECONFIG:-$KUBECONFIG}"
-[[ "$(kubectl config current-context)" == k3d-cluster-lab ]] || exit 1
+[[ "$(kubectl config current-context)" == k3d-tiagolabs-local ]] || exit 1
 images="$(node --input-type=module - "$pipeline_dir" "$1" <<'JS'
 import { pathToFileURL } from 'node:url'
 const { inspectArchive, requirePassingK3dE2EVerification } = await import(pathToFileURL(process.argv[2] + '/archive-images.js'))
@@ -38,7 +38,7 @@ kubectl -n hero-association create secret generic hero-association-quest-credent
   --from-file="$secret_dir/HERO_ASSOCIATION_QUEST_EXPEDITION_SERVICE_KEY" --from-file="$secret_dir/HERO_ASSOCIATION_ASSETS_QUEST_SERVICE_KEY" \
   --dry-run=client -o yaml | kubectl apply -f -
 kubectl apply -f "$k8s_dir/backend/service-accounts.yaml"
-"${K3D_BIN:-$infra_dir/.local/tools/k3d}" image import --mode direct "${catalog_images[@]}" --cluster cluster-lab
+"${K3D_BIN:-$infra_dir/.local/tools/k3d}" image import --mode direct "${catalog_images[@]}" --cluster tiagolabs-local
 index=0
 for service in world quest; do
   kubectl apply -f "$k8s_dir/backend/postgres-$service.yaml"

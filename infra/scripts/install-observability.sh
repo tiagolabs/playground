@@ -2,7 +2,7 @@
 source "$(dirname -- "${BASH_SOURCE[0]}")/common.sh"
 lab_context
 umask 077
-password_path="$infra_dir/.local/grafana-admin-password"
+password_path="$infra_dir/.local/local/grafana-admin-password"
 [[ -s "$password_path" ]] || openssl rand -hex 20 > "$password_path"
 kubectl apply -f "$infra_dir/platform/observability/namespace.yaml"
 kubectl -n observability create secret generic grafana-admin --from-file=admin-password="$password_path" --dry-run=client -o yaml | kubectl apply -f -

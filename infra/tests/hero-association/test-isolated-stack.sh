@@ -6,7 +6,7 @@ script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 source "$script_dir/../../scripts/application.sh" hero-association
 source "$script_dir/../reserve-gateway.sh" hero-association
 kubeconfig="${HERO_ASSOCIATION_K3D_KUBECONFIG:-$KUBECONFIG}"
-ca_certificate="${HERO_ASSOCIATION_LOCAL_CA_CERTIFICATE:-$infra_dir/.local/tls/local-ca.crt}"
+ca_certificate="${HERO_ASSOCIATION_LOCAL_CA_CERTIFICATE:-$infra_dir/.local/local/tls/local-ca.crt}"
 namespace=hero-association-e2e
 if [[ $# -gt 1 ]]; then
   printf 'Usage: %s [EIGHT_IMAGE_ARCHIVE_DIRECTORY]\n' "$0" >&2
@@ -45,8 +45,8 @@ if [[ ! -f "$kubeconfig" || "$ca_certificate" != /* || ! -s "$ca_certificate" ]]
   printf 'Missing k3d kubeconfig or absolute path to a readable local CA certificate.\n' >&2
   exit 1
 fi
-if [[ "$(kc config current-context)" != 'k3d-cluster-lab' ]]; then
-  printf 'Refusing to use a Kubernetes context other than k3d-cluster-lab.\n' >&2
+if [[ "$(kc config current-context)" != 'k3d-tiagolabs-local' ]]; then
+  printf 'Refusing to use a Kubernetes context other than k3d-tiagolabs-local.\n' >&2
   exit 1
 fi
 if kc get namespace "$namespace" >/dev/null 2>&1; then
@@ -66,7 +66,7 @@ if [[ -n "$archive_directory" ]]; then
   frontend_image="$(node -p 'JSON.parse(require("fs").readFileSync(process.argv[1], "utf8")).images.frontend.ref' "$candidate_file")"
   k3d_binary="${K3D_BIN:-$infra_dir/.local/tools/k3d}"
   "$k3d_binary" image import --mode direct "$core_image" "$bff_image" \
-    "$expedition_image" "$market_image" "$assets_image" "$world_image" "$quest_image" "$frontend_image" --cluster cluster-lab
+    "$expedition_image" "$market_image" "$assets_image" "$world_image" "$quest_image" "$frontend_image" --cluster tiagolabs-local
 else
   for service in core bff expedition market assets world quest frontend; do
     image="$(kc -n hero-association get deployment "$service" \
@@ -270,8 +270,8 @@ if [[ -n "$archive_directory" ]]; then
     "$candidate_file" - "$kubeconfig" "$namespace"
 fi
 
-gateway_ip="$(docker inspect k3d-cluster-lab-serverlb --format \
-  '{{(index .NetworkSettings.Networks "k3d-cluster-lab").IPAddress}}')"
+gateway_ip="$(docker inspect k3d-tiagolabs-local-serverlb --format \
+  '{{(index .NetworkSettings.Networks "k3d-tiagolabs-local").IPAddress}}')"
 if [[ ! "$gateway_ip" =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}$ ]]; then
   printf 'Unable to resolve the k3d Gateway IPv4 address.\n' >&2
   exit 1
@@ -281,7 +281,7 @@ playwright_image="mcr.microsoft.com/playwright:v${playwright_version}-noble"
 for url in \
   https://app.e2e.heroassociation.test/ \
   https://auth.e2e.heroassociation.test/realms/hero-association/.well-known/openid-configuration; do
-  docker run --rm --network k3d-cluster-lab \
+  docker run --rm --network k3d-tiagolabs-local \
     --add-host "app.e2e.heroassociation.test:$gateway_ip" \
     --add-host "auth.e2e.heroassociation.test:$gateway_ip" \
     --mount "type=bind,src=$ca_certificate,dst=/tmp/local-ca.crt,readonly" \
@@ -305,7 +305,7 @@ SQL
 
 mkdir -m 700 "$temporary_directory/world-quest-session"
 run_world_quest_phase() {
-  docker run --rm --init --network k3d-cluster-lab --ipc host \
+  docker run --rm --init --network k3d-tiagolabs-local --ipc host \
     --add-host "app.e2e.heroassociation.test:$gateway_ip" \
     --add-host "auth.e2e.heroassociation.test:$gateway_ip" \
     --user "$(id -u):$(id -g)" \
@@ -331,7 +331,7 @@ kc -n "$namespace" rollout status deployment/assets --timeout=5m
 run_world_quest_phase 'Quest restart recovery'
 printf 'Pinned dungeon survived World outage; Quest, Core and Expedition restart paid the reward once after Assets recovery.\n'
 
-docker run --rm --init --network k3d-cluster-lab --ipc host \
+docker run --rm --init --network k3d-tiagolabs-local --ipc host \
   --add-host "app.e2e.heroassociation.test:$gateway_ip" \
   --add-host "auth.e2e.heroassociation.test:$gateway_ip" \
   --user "$(id -u):$(id -g)" \
@@ -341,7 +341,7 @@ docker run --rm --init --network k3d-cluster-lab --ipc host \
 
 mkdir -m 700 "$temporary_directory/assets-session"
 run_assets_phase() {
-  docker run --rm --init --network k3d-cluster-lab --ipc host \
+  docker run --rm --init --network k3d-tiagolabs-local --ipc host \
     --add-host "app.e2e.heroassociation.test:$gateway_ip" \
     --add-host "auth.e2e.heroassociation.test:$gateway_ip" \
     --user "$(id -u):$(id -g)" \
@@ -363,7 +363,7 @@ printf 'Assets outage retained the Core Hero fence; restart recovery completed t
 
 mkdir -m 700 "$temporary_directory/session"
 run_session_phase() {
-  docker run --rm --init --network k3d-cluster-lab --ipc host \
+  docker run --rm --init --network k3d-tiagolabs-local --ipc host \
     --add-host "app.e2e.heroassociation.test:$gateway_ip" \
     --add-host "auth.e2e.heroassociation.test:$gateway_ip" \
     --user "$(id -u):$(id -g)" \
@@ -432,7 +432,7 @@ run_session_phase 'expired BFF token state fails closed'
 printf 'Expired disposable BFF token state failed closed.\n'
 
 mkdir -m 700 "$temporary_directory/k6"
-docker run --rm --init --network k3d-cluster-lab --ipc host \
+docker run --rm --init --network k3d-tiagolabs-local --ipc host \
   --add-host "app.e2e.heroassociation.test:$gateway_ip" \
   --add-host "auth.e2e.heroassociation.test:$gateway_ip" \
   --user "$(id -u):$(id -g)" \
@@ -440,7 +440,7 @@ docker run --rm --init --network k3d-cluster-lab --ipc host \
   --volume "$project_dir/e2e:/work:ro" \
   --volume "$temporary_directory/k6:/session" --workdir /work \
   "$playwright_image" node /work/prepare-k6-session.mjs
-docker run --rm --init --network k3d-cluster-lab \
+docker run --rm --init --network k3d-tiagolabs-local \
   --add-host "app.e2e.heroassociation.test:$gateway_ip" \
   --add-host "auth.e2e.heroassociation.test:$gateway_ip" \
   --user "$(id -u):$(id -g)" \

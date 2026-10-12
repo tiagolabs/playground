@@ -251,7 +251,7 @@ the older Compose environment provides a similar workflow.
 - [x] Remove Traefik services, configuration, and obsolete Compose startup
   paths after the replacement component and exact-image E2E suites passed.
   The standalone JVM/native Compose workflows remain. Ignored certificate
-  material was preserved; Envoy uses `infra/.local/tls/`, not the retired directory.
+  material was preserved; Envoy uses `infra/.local/local/tls/`, not the retired directory.
   The removed tracked files remain recoverable from Git history.
 - [x] Document one-command entry, status, and exit for hybrid and full k3d
   modes, requirements, ports, secrets, interruption recovery, and explicit

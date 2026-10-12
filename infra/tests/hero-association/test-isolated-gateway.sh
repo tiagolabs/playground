@@ -5,7 +5,7 @@ script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 source "$script_dir/../../scripts/application.sh" hero-association
 source "$script_dir/../reserve-gateway.sh" hero-association
 kubeconfig="${HERO_ASSOCIATION_K3D_KUBECONFIG:-$KUBECONFIG}"
-certificate_dir="$infra_dir/.local/tls"
+certificate_dir="$infra_dir/.local/local/tls"
 namespace="hero-association-e2e-probe-$$"
 app_host=app.e2e.heroassociation.test
 
@@ -13,7 +13,7 @@ if [[ ! -f "$kubeconfig" || ! -s "$certificate_dir/local-ca.crt" ]]; then
   printf 'Missing k3d kubeconfig or local CA certificate.\n' >&2
   exit 1
 fi
-if [[ "$(kubectl --kubeconfig "$kubeconfig" config current-context)" != 'k3d-cluster-lab' ]]; then
+if [[ "$(kubectl --kubeconfig "$kubeconfig" config current-context)" != 'k3d-tiagolabs-local' ]]; then
   printf 'Refusing to test outside the hero-association k3d context.\n' >&2
   exit 1
 fi
@@ -72,7 +72,7 @@ metadata:
   name: frontend
 spec:
   parentRefs:
-    - name: cluster-lab
+    - name: tiagolabs-local
       namespace: gateway-system
       sectionName: e2e-app
   hostnames:
@@ -88,8 +88,8 @@ kubectl --kubeconfig "$kubeconfig" -n "$namespace" wait \
   --for=jsonpath='{.status.parents[0].conditions[?(@.type=="Accepted")].status}'=True \
   httproute/frontend --timeout=2m
 
-gateway_ip="$(docker inspect k3d-cluster-lab-serverlb --format \
-  '{{(index .NetworkSettings.Networks "k3d-cluster-lab").IPAddress}}')"
+gateway_ip="$(docker inspect k3d-tiagolabs-local-serverlb --format \
+  '{{(index .NetworkSettings.Networks "k3d-tiagolabs-local").IPAddress}}')"
 if [[ ! "$gateway_ip" =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}$ ]]; then
   printf 'Unable to resolve the k3d Gateway IPv4 address.\n' >&2
   exit 1
@@ -98,7 +98,7 @@ fi
 playwright_version="$(node -p "require('$project_dir/e2e/package-lock.json').packages['node_modules/@playwright/test'].version")"
 playwright_image="mcr.microsoft.com/playwright:v${playwright_version}-noble"
 for host in "$app_host" heroassociation.test; do
-  docker run --rm --network k3d-cluster-lab \
+  docker run --rm --network k3d-tiagolabs-local \
     --add-host "$host:$gateway_ip" \
     --mount "type=bind,src=$certificate_dir/local-ca.crt,dst=/tmp/local-ca.crt,readonly" \
     "$playwright_image" \

@@ -10,7 +10,7 @@ printf '%s  %s\n' \
   '72b3971364f172eb0b9636c7142cc84ff695467bc065897958bde85a3c06cfd5' \
   "$manifest_path" | sha256sum --check --status
 
-kubectl apply --server-side --field-manager=cluster-lab-envoy-gateway \
+kubectl apply --server-side --field-manager=tiagolabs-local-envoy-gateway \
   -f "$manifest_path"
 kubectl -n envoy-gateway-system rollout status deployment/envoy-gateway --timeout=180s
 

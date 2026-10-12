@@ -10,7 +10,7 @@ while the [cutover](../../../../projects/hero-association/COMBAT_EXPEDITION_PLAN
 ## Requirements and build
 
 Start the existing k3d lab using the [main k3d runbook](README.md), including
-Keycloak, Core, BFF, and Istio. From `hands-on/`, make the
+Keycloak, Core, BFF, and Istio. From `playground/`, make the
 pinned `.tools/k3d` available if `k3d` is not already on `PATH`:
 
 ```bash
@@ -21,7 +21,7 @@ infra/apps/hero-association/operations/stage-expedition.sh
 
 The first command runs the Expedition and shared combat-engine Maven tests,
 builds `hero-association-expedition:k3d`, and imports it to k3d. The second
-refuses any kubeconfig context other than `k3d-cluster-lab`; it creates
+refuses any kubeconfig context other than `k3d-tiagolabs-local`; it creates
 stable, ignored local secrets, dedicated persistent Redis and RabbitMQ, a
 one-time broker setup Job, and the private Expedition Deployment and Service.
 Rerun both commands after a source change. The normal
@@ -39,9 +39,9 @@ the files or delete the Redis/RabbitMQ PVCs while an Expedition may be active.
 ## Verify staging
 
 ```bash
-KUBECONFIG="$PWD/infra/.local/kubeconfig" kubectl -n hero-association get \
+KUBECONFIG="$PWD/infra/.local/local/kubeconfig" kubectl -n hero-association get \
   statefulset/redis-expedition statefulset/rabbitmq-expedition deployment/expedition service/expedition
-KUBECONFIG="$PWD/infra/.local/kubeconfig" kubectl -n hero-association exec \
+KUBECONFIG="$PWD/infra/.local/local/kubeconfig" kubectl -n hero-association exec \
   statefulset/rabbitmq-expedition -c rabbitmq -- rabbitmqctl list_permissions -p /
 ```
 

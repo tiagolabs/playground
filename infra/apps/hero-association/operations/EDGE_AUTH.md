@@ -42,7 +42,7 @@ returns Core `400`, unrelated to the edge limit.
 
 ## Build and verify
 
-From `hands-on/`, use this lab's ignored `infra/.local/kubeconfig`
+From `playground/`, use this lab's ignored `infra/.local/local/kubeconfig`
 for every cluster command. Do not apply these resources to the separate WSL
 K3s cluster. Install the gateway after creating the cluster, then build and
 deploy as described in [README.md](README.md):
@@ -61,8 +61,8 @@ enables its private identity endpoint. When importing a rebuilt image with
 the same `:k3d` tag, restart only that Deployment so Pods load the new image:
 
 ```bash
-KUBECONFIG="$PWD/infra/.local/kubeconfig" kubectl -n hero-association rollout restart deployment/bff
-KUBECONFIG="$PWD/infra/.local/kubeconfig" kubectl -n hero-association rollout status deployment/bff
+KUBECONFIG="$PWD/infra/.local/local/kubeconfig" kubectl -n hero-association rollout restart deployment/bff
+KUBECONFIG="$PWD/infra/.local/local/kubeconfig" kubectl -n hero-association rollout status deployment/bff
 ```
 
 From `projects/hero-association/e2e`, run:
@@ -106,12 +106,12 @@ the steady-state limit. The counters and Sentinel configuration are ephemeral
 and all three k3d nodes run on one computer. This is Pod redundancy, not a
 production multi-AZ design. Do not reset either database for this test.
 
-To inspect quorum and the primary from `hands-on/`:
+To inspect quorum and the primary from `playground/`:
 
 ```bash
-KUBECONFIG="$PWD/infra/.local/kubeconfig" kubectl -n envoy-gateway-system get pods -l app=redis-gateway-ha -o wide
-KUBECONFIG="$PWD/infra/.local/kubeconfig" kubectl -n envoy-gateway-system exec redis-gateway-ha-0 -c sentinel -- redis-cli -p 26379 sentinel ckquorum gateway
-KUBECONFIG="$PWD/infra/.local/kubeconfig" kubectl -n envoy-gateway-system exec redis-gateway-ha-0 -c sentinel -- redis-cli -p 26379 sentinel get-master-addr-by-name gateway
+KUBECONFIG="$PWD/infra/.local/local/kubeconfig" kubectl -n envoy-gateway-system get pods -l app=redis-gateway-ha -o wide
+KUBECONFIG="$PWD/infra/.local/local/kubeconfig" kubectl -n envoy-gateway-system exec redis-gateway-ha-0 -c sentinel -- redis-cli -p 26379 sentinel ckquorum gateway
+KUBECONFIG="$PWD/infra/.local/local/kubeconfig" kubectl -n envoy-gateway-system exec redis-gateway-ha-0 -c sentinel -- redis-cli -p 26379 sentinel get-master-addr-by-name gateway
 ```
 
 For this lab, investigate a missing quorum or unhealthy `envoy-ratelimit`

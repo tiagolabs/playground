@@ -8,10 +8,10 @@ const packageLock = JSON.parse(await readFile(path.join(e2eDirectory, 'package-l
 const playwrightVersion = packageLock.packages['node_modules/@playwright/test'].version
 const playwrightImage = `mcr.microsoft.com/playwright:v${playwrightVersion}-noble`
 const configFile = process.env.HERO_ASSOCIATION_K3D_PLAYWRIGHT_CONFIG || 'playwright.k3d.config.js'
-const k3dNetwork = 'k3d-cluster-lab'
+const k3dNetwork = 'k3d-tiagolabs-local'
 
-const gatewayIp = execFileSync('docker', ['inspect','k3d-cluster-lab-serverlb','--format','{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}'], {encoding:'utf8'}).trim()
-if (!/^([0-9]{1,3}\.){3}[0-9]{1,3}$/.test(gatewayIp)) throw new Error('Missing cluster-lab gateway address')
+const gatewayIp = execFileSync('docker', ['inspect','k3d-tiagolabs-local-serverlb','--format','{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}'], {encoding:'utf8'}).trim()
+if (!/^([0-9]{1,3}\.){3}[0-9]{1,3}$/.test(gatewayIp)) throw new Error('Missing tiagolabs-local gateway address')
 const argumentsForDocker = [
   'run', '--rm', '--init',
   '--network', k3dNetwork,

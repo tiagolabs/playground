@@ -1,6 +1,6 @@
 > Shared cluster bootstrap, host mappings, certificates, identity, and telemetry
-> are owned by [infra](../../infra/README.md). Use `cluster-lab`, its isolated
-> `infra/.local/kubeconfig`, and `127.0.0.2:443`. Keycloak is in namespace `identity`, realm `lab`; account
+> are owned by [infra](../../infra/README.md). Use `tiagolabs-local`, its isolated
+> `infra/.local/local/kubeconfig`, and `127.0.0.2:443`. Keycloak is in namespace `identity`, realm `lab`; account
 > administration is at https://identity.lab.test. Hero hot-reload services still
 > use their own namespace and stable Services.
 
@@ -22,9 +22,9 @@ Node.js 24/npm 11, Docker, `kubectl`, k3d v5.9.0, `istioctl` 1.30.5,
 `curl`, `openssl`, `sha256sum`, `ss`, and `ip`. Allow about 8 GiB for the
 cluster and observability stack. Follow the one-time
 [cluster and deployment instructions](../../infra/apps/hero-association/operations/README.md) before using the
-commands below. The ignored `infra/.local/kubeconfig` must exist.
+commands below. The ignored `infra/.local/local/kubeconfig` must exist.
 
-Run `infra/scripts/configure-hosts.sh` from `hands-on/` to map lab hosts and trust
+Run `infra/scripts/configure-hosts.sh` from `playground/` to map lab hosts and trust
 the shared CA in WSL and Windows. For manual setup, add these names without URL
 schemes to the Windows hosts file
 (`C:\Windows\System32\drivers\etc\hosts`) or the Linux `/etc/hosts` file:
@@ -36,12 +36,12 @@ schemes to the Windows hosts file
 127.0.0.2 pix.lab.test
 ```
 
-The Gateway certificate and CA are generated in ignored `infra/.local/tls/`. Trust
-`infra/.local/tls/local-ca.crt` in the browser's OS; never import or commit the CA
+The Gateway certificate and CA are generated in ignored `infra/.local/local/tls/`. Trust
+`infra/.local/local/tls/local-ca.crt` in the browser's OS; never import or commit the CA
 private key. On Windows, run from the `hands-on` directory:
 
 ```bash
-WINDOWS_CERTIFICATE_PATH="$(wslpath -w infra/.local/tls/local-ca.crt)"
+WINDOWS_CERTIFICATE_PATH="$(wslpath -w infra/.local/local/tls/local-ca.crt)"
 (cd /mnt/c && certutil.exe -user -addstore -f Root "$WINDOWS_CERTIFICATE_PATH")
 ```
 
@@ -51,11 +51,11 @@ verification. The two retired `k3d.*` aliases are not needed.
 
 ## Start and inspect the full k3d application
 
-From `hands-on/`:
+From `playground/`:
 
 ```bash
-k3d cluster start cluster-lab
-KUBECONFIG="$PWD/infra/.local/kubeconfig" kubectl -n hero-association get deploy,svc,httproute,hpa
+k3d cluster start tiagolabs-local
+KUBECONFIG="$PWD/infra/.local/local/kubeconfig" kubectl -n hero-association get deploy,svc,httproute,hpa
 infra/apps/hero-association/operations/hybrid.sh status core
 infra/apps/hero-association/operations/hybrid.sh status bff
 infra/apps/hero-association/operations/hybrid.sh status expedition
@@ -66,7 +66,7 @@ infra/apps/hero-association/operations/hybrid.sh status frontend
 Starting an existing cluster does not rebuild images or reset data. After
 first setup, all eight application Deployments should be ready. To pause the
 whole environment, restore any hybrid services first, then run
-`k3d cluster stop cluster-lab`; this keeps the cluster data. The `status`
+`k3d cluster stop tiagolabs-local`; this keeps the cluster data. The `status`
 command reads only the isolated k3d context; it does not change another
 Kubernetes cluster. Envoy binds `127.0.0.2:80/443`, while Raydow uses `127.0.0.1:80/443`.
 Both clusters and their independent Jenkins controllers can run concurrently.
@@ -75,7 +75,7 @@ Shared platform setup belongs to [infra](../../infra/README.md).
 ## Switch a service to WSL hot reload
 
 Run one command per selected service in its own terminal, from
-`hands-on/`:
+`playground/`:
 
 ```bash
 infra/apps/hero-association/operations/hybrid.sh run core

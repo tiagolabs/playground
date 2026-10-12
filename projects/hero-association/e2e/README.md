@@ -10,15 +10,15 @@ been retired; standalone JVM/native Compose packaging remains available.
 ## Verify a candidate archive without deploying it
 
 With Docker, Java 25, Node.js 24, k3d, and the isolated kubeconfig available,
-run from `hands-on/`:
+run from `playground/`:
 
 ```bash
 infra/pipelines/hero-association/build-local.sh all
 (cd projects/hero-association/e2e && npm ci)
-infra/tests/hero-association/test-isolated-stack.sh infra/.local/pipelines/hero-association/artifacts/<build-id>/all
+infra/tests/hero-association/test-isolated-stack.sh infra/.local/local/pipelines/hero-association/artifacts/<build-id>/all
 ```
 
-Or from `e2e/`, run `npm run test:isolated -- ../../../infra/.local/pipelines/hero-association/artifacts/<build-id>/all`.
+Or from `e2e/`, run `npm run test:isolated -- ../../../infra/.local/local/pipelines/hero-association/artifacts/<build-id>/all`.
 The candidate can be built while daily development runs in hybrid mode;
 tests and identity data stay in disposable namespaces. Manual promotion
 still requires restoring all eight daily application Deployments to full k3d
@@ -191,7 +191,7 @@ To change the load, set `HERO_ASSOCIATION_K3D_LOAD_SECONDS` (1–600) and
 and their Istio sidecars with `kubectl top pods --containers` using the
 isolated k3d kubeconfig. For a full HPA scale-out, BFF rolling-restart,
 scale-in, and post-load browser check, run
-`infra/tests/hero-association/test-autoscaling.sh` from `hands-on/`. This is a read-only
+`infra/tests/hero-association/test-autoscaling.sh` from `playground/`. This is a read-only
 workload, not a mixed-action capacity test.
 
 ## Measure k3d mixed API load

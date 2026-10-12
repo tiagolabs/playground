@@ -9,7 +9,7 @@ Quest flow. Ordinary local development remains unchanged.
 Start the isolated k3d lab per [README.md](README.md), including Istio, Envoy
 Gateway, Keycloak, Core, and BFF. Stage the dedicated Redis, RabbitMQ, and
 Expedition service first using [EXPEDITION.md](EXPEDITION.md). From
-`hands-on/`:
+`playground/`:
 
 ```bash
 export PATH="$PWD/.tools:$PATH"

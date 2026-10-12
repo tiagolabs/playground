@@ -4,7 +4,7 @@ lab_context
 umask 077
 node "$infra_dir/scripts/generate-realm.mjs"
 kubectl apply -f "$infra_dir/platform/policies/namespaces.yaml"
-secrets="$infra_dir/.local/identity"
+secrets="$infra_dir/.local/local/identity"
 kubectl -n identity create secret generic identity-credentials --from-file="$secrets/KEYCLOAK_DATABASE_PASSWORD" --from-file="$secrets/KEYCLOAK_ADMIN_PASSWORD" --dry-run=client -o yaml | kubectl apply -f -
 kubectl -n identity create secret generic lab-realm --from-file="$secrets/lab-realm.json" --dry-run=client -o yaml | kubectl apply -f -
 kubectl apply -f "$infra_dir/platform/identity/postgres.yaml" -f "$infra_dir/platform/identity/mailpit.yaml" -f "$infra_dir/platform/identity/network.yaml"

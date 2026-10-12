@@ -23,7 +23,7 @@ pipeline {
             steps {
                 sh 'test -r "$HERO_ASSOCIATION_K3D_KUBECONFIG"'
                 sh 'test -x "$K3D_BIN"'
-                sh 'kubectl --kubeconfig "$HERO_ASSOCIATION_K3D_KUBECONFIG" config current-context | grep -Fx k3d-cluster-lab'
+                sh 'kubectl --kubeconfig "$HERO_ASSOCIATION_K3D_KUBECONFIG" config current-context | grep -Fx k3d-tiagolabs-local'
                 sh 'docker info >/dev/null'
             }
         }
@@ -40,7 +40,7 @@ pipeline {
             script {
                 if (env.HERO_ASSOCIATION_BUILD_ID) {
                     archiveArtifacts(
-                        artifacts: "infra/.local/pipelines/hero-association/artifacts/${env.HERO_ASSOCIATION_BUILD_ID}/all/manifest.txt,infra/.local/pipelines/hero-association/artifacts/${env.HERO_ASSOCIATION_BUILD_ID}/all/k3d-e2e-verification.json,infra/.local/pipelines/hero-association/artifacts/${env.HERO_ASSOCIATION_BUILD_ID}/all/k3d-promotion.json",
+                        artifacts: "infra/.local/local/pipelines/hero-association/artifacts/${env.HERO_ASSOCIATION_BUILD_ID}/all/manifest.txt,infra/.local/local/pipelines/hero-association/artifacts/${env.HERO_ASSOCIATION_BUILD_ID}/all/k3d-e2e-verification.json,infra/.local/local/pipelines/hero-association/artifacts/${env.HERO_ASSOCIATION_BUILD_ID}/all/k3d-promotion.json",
                         allowEmptyArchive: true
                     )
                 }

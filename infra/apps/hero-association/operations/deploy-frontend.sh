@@ -10,7 +10,7 @@ if [[ ! -f "$kubeconfig_path" ]]; then
   exit 1
 fi
 export KUBECONFIG="$kubeconfig_path"
-if [[ "$(kubectl config current-context)" != 'k3d-cluster-lab' ]]; then
+if [[ "$(kubectl config current-context)" != 'k3d-tiagolabs-local' ]]; then
   printf 'Refusing to deploy outside the hero-association k3d context.\n' >&2
   exit 1
 fi

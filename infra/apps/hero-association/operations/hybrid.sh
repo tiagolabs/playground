@@ -31,8 +31,8 @@ case "$service" in
 esac
 
 [[ -f "$KUBECONFIG" ]] || { printf 'Missing isolated k3d kubeconfig.\n' >&2; exit 1; }
-[[ "$(kubectl config current-context)" == k3d-cluster-lab ]] ||
-  { printf 'Refusing to change a cluster other than k3d-cluster-lab.\n' >&2; exit 1; }
+[[ "$(kubectl config current-context)" == k3d-tiagolabs-local ]] ||
+  { printf 'Refusing to change a cluster other than k3d-tiagolabs-local.\n' >&2; exit 1; }
 
 state_file="$state_dir/$service.state"
 hpa_file="$state_dir/$service.hpa.json"

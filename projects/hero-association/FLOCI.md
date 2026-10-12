@@ -17,7 +17,7 @@ After `infra/pipelines/hero-association/build-local.sh all` and the disposable k
 have passed, publish the same archive to Floci S3 without building again:
 
 ```bash
-node infra/pipelines/hero-association/publish-floci.mjs infra/.local/pipelines/hero-association/artifacts/<build-id>/all
+node infra/pipelines/hero-association/publish-floci.mjs infra/.local/local/pipelines/hero-association/artifacts/<build-id>/all
 ```
 
 The script accepts only the loopback Floci endpoint, checks the archive and
@@ -36,7 +36,7 @@ To consume the stored artifact independently of the original build directory:
 node infra/pipelines/hero-association/fetch-floci.mjs <build-id>
 ```
 
-It creates a new directory under ignored `infra/.local/pipelines/hero-association/artifacts/`, verifies the
+It creates a new directory under ignored `infra/.local/local/pipelines/hero-association/artifacts/`, verifies the
 downloaded checksum, image IDs, and passing E2E record, and loads the images.
 
 To explore S3 with an installed AWS CLI, use a terminal with **dummy**
@@ -94,8 +94,8 @@ node infra/pipelines/hero-association/provision-floci-keycloak-db.mjs
 ```
 
 Each first run generates a different random password in an ignored, owner-only
-credential file: `infra/.local/pipelines/hero-association/artifacts/floci-core-db.json` or
-`infra/.local/pipelines/hero-association/artifacts/floci-keycloak-db.json`. Keep both files while their RDS
+credential file: `infra/.local/local/pipelines/hero-association/artifacts/floci-core-db.json` or
+`infra/.local/local/pipelines/hero-association/artifacts/floci-keycloak-db.json`. Keep both files while their RDS
 instances exist; later ECS tasks will read the appropriate one. Core uses
 `hero-association-core-lab`, database `hero_association`, at `floci:7001`;
 Keycloak uses `hero-association-keycloak-lab`, database `keycloak`, at

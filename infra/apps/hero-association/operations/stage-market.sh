@@ -6,7 +6,7 @@ script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 source "$script_dir/../../../scripts/application.sh" hero-association
 kubeconfig="${HERO_ASSOCIATION_K3D_KUBECONFIG:-$KUBECONFIG}"
 export KUBECONFIG="$kubeconfig"
-[[ "$(kubectl config current-context)" == k3d-cluster-lab ]] || exit 1
+[[ "$(kubectl config current-context)" == k3d-tiagolabs-local ]] || exit 1
 market_image="$(node --input-type=module - "$pipeline_dir" "$1" <<'JS'
 import { pathToFileURL } from 'node:url'
 const { inspectArchive, requirePassingK3dE2EVerification } = await import(pathToFileURL(process.argv[2] + '/archive-images.js'))
@@ -44,7 +44,7 @@ if [[ "$schema_exists" != f ]]; then
   printf 'Refusing initial staging over an existing Market schema. Inspect the interrupted cutover.\n' >&2
   exit 1
 fi
-"${K3D_BIN:-$infra_dir/.local/tools/k3d}" image import --mode direct "$market_image" --cluster cluster-lab
+"${K3D_BIN:-$infra_dir/.local/tools/k3d}" image import --mode direct "$market_image" --cluster tiagolabs-local
 job="$(sed "s#hero-association-market:k3d#$market_image#g" \
   "$k8s_dir/backend/market-db-bootstrap.yaml" | kubectl create -f - -o jsonpath='{.metadata.name}')"
 kubectl -n "$namespace" wait --for=condition=complete "job/$job" --timeout=5m

@@ -1,6 +1,6 @@
 {
   "realm": "lab",
-  "displayName": "Cluster Lab",
+  "displayName": "TiagoLabs Local",
   "enabled": true,
   "registrationAllowed": false,
   "resetPasswordAllowed": true,
@@ -16,7 +16,7 @@
     "host": "mailpit",
     "port": "1025",
     "from": "accounts@lab.test",
-    "fromDisplayName": "Cluster Lab",
+    "fromDisplayName": "TiagoLabs Local",
     "ssl": "false",
     "starttls": "false",
     "auth": "false"

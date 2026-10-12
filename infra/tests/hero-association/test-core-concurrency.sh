@@ -20,7 +20,7 @@ if [[ $# -ne 0 ]]; then
   printf 'Usage: %s\n' "$0" >&2
   exit 2
 fi
-if [[ ! -f "$KUBECONFIG" || "$(kubectl config current-context)" != k3d-cluster-lab ]]; then
+if [[ ! -f "$KUBECONFIG" || "$(kubectl config current-context)" != k3d-tiagolabs-local ]]; then
   printf 'The isolated hero-association k3d kubeconfig is required.\n' >&2
   exit 1
 fi

@@ -2,21 +2,21 @@
 set -euo pipefail
 
 script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
-project_dir="$(cd -- "$script_dir/../.." && pwd)"
-kubeconfig="${LAB_KUBECONFIG:-${HERO_ASSOCIATION_K3D_KUBECONFIG:-$project_dir/.local/kubeconfig}}"
+source "$script_dir/common.sh"
+kubeconfig="$KUBECONFIG"
 k3d_bin="${K3D_BIN:-$(command -v k3d || true)}"
 if [[ -z "$k3d_bin" ]]; then
-  k3d_bin="$project_dir/.local/tools/k3d"
+  k3d_bin="$infra_dir/.local/tools/k3d"
 fi
-agent_workdir="${JENKINS_AGENT_WORKDIR:-${XDG_STATE_HOME:-$HOME/.local/state}/cluster-lab-jenkins/agent}"
+agent_workdir="${JENKINS_AGENT_WORKDIR:-$ci_state_dir/agent}"
 
 for tool in docker kubectl java node npm git rsync openssl curl; do
   command -v "$tool" >/dev/null || { printf 'Missing required tool: %s\n' "$tool" >&2; exit 1; }
 done
 [[ -r "$kubeconfig" ]] || { printf 'Missing readable k3d kubeconfig: %s\n' "$kubeconfig" >&2; exit 1; }
 [[ -x "$k3d_bin" ]] || { printf 'Missing executable k3d binary: %s\n' "$k3d_bin" >&2; exit 1; }
-[[ "$(kubectl --kubeconfig "$kubeconfig" config current-context)" == k3d-cluster-lab ]] ||
-  { printf 'Kubeconfig must select k3d-cluster-lab\n' >&2; exit 1; }
+[[ "$(kubectl --kubeconfig "$kubeconfig" config current-context)" == k3d-tiagolabs-local ]] ||
+  { printf 'Kubeconfig must select k3d-tiagolabs-local\n' >&2; exit 1; }
 [[ "$(node -p 'process.versions.node.split(".")[0]')" == 24 ]] ||
   { printf 'Node.js 24 is required for this local pipeline\n' >&2; exit 1; }
 java -version 2>&1 | grep -Eq 'version "25([."]|$)' ||
@@ -29,16 +29,17 @@ for value in "$kubeconfig" "$k3d_bin" "$agent_workdir"; do
 done
 
 umask 077
-mkdir -p "$agent_workdir"
-if [[ ! -e "$script_dir/.env" ]]; then
+mkdir -p "$ci_state_dir/controller-home" "$agent_workdir"
+chmod 700 "$ci_state_dir"
+if [[ ! -e "$ci_state_dir/.env" ]]; then
   admin_password="$(openssl rand -hex 24)"
-  printf 'JENKINS_ADMIN_PASSWORD=%s\nJENKINS_AGENT_WORKDIR=%s\n' "$admin_password" "$agent_workdir" > "$script_dir/.env"
-  printf 'Created private controller settings at %s\n' "$script_dir/.env"
+  printf 'JENKINS_ADMIN_PASSWORD=%s\nJENKINS_AGENT_WORKDIR=%s\n' "$admin_password" "$agent_workdir" > "$ci_state_dir/.env"
+  printf 'Created private controller settings at %s\n' "$ci_state_dir/.env"
 else
-  printf 'Keeping existing controller settings at %s\n' "$script_dir/.env"
+  printf 'Keeping existing controller settings at %s\n' "$ci_state_dir/.env"
 fi
 
-if [[ ! -e "$script_dir/agent.env" ]]; then
+if [[ ! -e "$ci_state_dir/agent.env" ]]; then
   {
     printf 'LAB_KUBECONFIG=%q\n' "$(realpath "$kubeconfig")"
     printf 'K3D_BIN=%q\n' "$(realpath "$k3d_bin")"
@@ -46,9 +47,9 @@ if [[ ! -e "$script_dir/agent.env" ]]; then
     printf 'JENKINS_AGENT_JAVA_BIN=%q\n' "$(command -v java)"
     printf 'JENKINS_AGENT_NODE_BIN=%q\n' "$(command -v node)"
     printf 'TESTCONTAINERS_HOST_OVERRIDE=host.docker.internal\n'
-  } > "$script_dir/agent.env"
-  printf 'Created private WSL agent settings at %s\n' "$script_dir/agent.env"
+  } > "$ci_state_dir/agent.env"
+  printf 'Created private WSL agent settings at %s\n' "$ci_state_dir/agent.env"
 else
-  printf 'Keeping existing WSL agent settings at %s\n' "$script_dir/agent.env"
+  printf 'Keeping existing WSL agent settings at %s\n' "$ci_state_dir/agent.env"
 fi
 printf 'Next: docker compose -f %s/compose.yaml up --detach --build\n' "$script_dir"

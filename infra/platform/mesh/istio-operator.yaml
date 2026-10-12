@@ -1,7 +1,7 @@
 apiVersion: install.istio.io/v1alpha1
 kind: IstioOperator
 metadata:
-  name: cluster-lab-istio
+  name: tiagolabs-local-istio
   namespace: istio-system
 spec:
   profile: minimal

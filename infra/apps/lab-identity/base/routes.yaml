@@ -3,7 +3,7 @@ kind: HTTPRoute
 metadata: {name: lab-identity, namespace: lab-identity}
 spec:
   parentRefs:
-    - {name: cluster-lab, namespace: gateway-system, sectionName: https}
+    - {name: tiagolabs-local, namespace: gateway-system, sectionName: https}
   hostnames: [identity.lab.test]
   rules:
     - matches:

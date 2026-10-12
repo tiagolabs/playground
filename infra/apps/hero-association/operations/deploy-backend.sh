@@ -18,7 +18,7 @@ if [[ ! -f "$kubeconfig_path" ]]; then
   exit 1
 fi
 export KUBECONFIG="$kubeconfig_path"
-if [[ "$(kubectl config current-context)" != 'k3d-cluster-lab' ]]; then
+if [[ "$(kubectl config current-context)" != 'k3d-tiagolabs-local' ]]; then
   printf 'Refusing to deploy outside the hero-association k3d context.\n' >&2
   exit 1
 fi
@@ -33,7 +33,7 @@ for key in CORE_DATABASE_PASSWORD MARKET_DATABASE_PASSWORD ASSETS_DATABASE_PASSW
   fi
 done
 
-shared_secret="$infra_dir/.local/identity/HERO_ASSOCIATION_BFF_OIDC_CLIENT_SECRET"
+shared_secret="$infra_dir/.local/local/identity/HERO_ASSOCIATION_BFF_OIDC_CLIENT_SECRET"
 [[ -s "$shared_secret" ]] || { printf 'Deploy shared identity first.\n' >&2; exit 1; }
 cp "$shared_secret" "$secret_dir/HERO_ASSOCIATION_BFF_OIDC_CLIENT_SECRET"
 

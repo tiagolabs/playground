@@ -14,7 +14,7 @@ Shared Keycloak, BFF Redis, Core, and Envoy Gateway stay in k3d. From
 `infra/apps/hero-association/operations`, run:
 
 ```bash
-k3d cluster start cluster-lab
+k3d cluster start tiagolabs-local
 ./hybrid.sh run bff
 ```
 

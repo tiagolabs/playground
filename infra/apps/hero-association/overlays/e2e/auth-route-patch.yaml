@@ -1,7 +1,7 @@
 - op: replace
   path: /spec/parentRefs
   value:
-    - name: cluster-lab
+    - name: tiagolabs-local
       namespace: gateway-system
       sectionName: e2e-auth
 - op: replace

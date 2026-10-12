@@ -1,6 +1,6 @@
 # Lab Identity specification
 
-Lab Identity manages study accounts and explicit access to applications in Cluster Lab. It is a Quarkus Java 25 backend/BFF with a React frontend, deployed in namespace `lab-identity` at https://identity.lab.test. Shared infrastructure belongs to `../../infra/`.
+Lab Identity manages study accounts and explicit access to applications in TiagoLabs Local. It is a Quarkus Java 25 backend/BFF with a React frontend, deployed in namespace `lab-identity` at https://identity.lab.test. Shared infrastructure belongs to `../../infra/`.
 
 ## Identity and authorization
 
@@ -35,8 +35,8 @@ registered HTTPS origin; changing this Vite port does not change the issuer,
 redirect allowlist or deployed gateway route.
 
 Application source, build definitions, and tests live in
-`hands-on/projects/lab-identity/`.
+`playground/projects/lab-identity/`.
 
 Lab Identity's backend/frontend/Redis deployments, routes, mesh policies, identity declarations, and operations are versioned in `../../infra/apps/lab-identity/`, with an independent lab overlay. Jenkins jobs are declared in `../../infra/ci/jenkins/jobs/`. Platform policies supply its namespace, resource budget, network boundary, and namespace-scoped deployment role. Redis requires mesh mTLS from the backend service account. User APIs require both role and audience validation. Shared Keycloak/PostgreSQL, Gateway, mesh control plane, and telemetry are outside the project. Ordinary app deployment never resets shared users.
 
-`../../infra/pipelines/lab-identity/build.sh` verifies backend tests, creates frontend production assets, builds images, and records image IDs. Its source digest covers application code, deployment configuration, delivery scripts, and their shared path helpers. `deploy.sh` accepts only those verified image IDs and unchanged inputs, imports them into `cluster-lab`, and deploys them explicitly. Candidate records are ignored under `infra/.local/pipelines/lab-identity/`. Local mutable tags are guarded by recorded image IDs. A later build replaces the candidate record. Backend Maven and frontend npm builds remain independent of infra and a running cluster.
+`../../infra/pipelines/lab-identity/build.sh` verifies backend tests, creates frontend production assets, builds images, and records image IDs. Its source digest covers application code, deployment configuration, delivery scripts, and their shared path helpers. `deploy.sh` accepts only those verified image IDs and unchanged inputs, imports them into `tiagolabs-local`, and deploys them explicitly. Candidate records are ignored under `infra/.local/local/pipelines/lab-identity/`. Local mutable tags are guarded by recorded image IDs. A later build replaces the candidate record. Backend Maven and frontend npm builds remain independent of infra and a running cluster.

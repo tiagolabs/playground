@@ -29,6 +29,6 @@ certificate when running from an isolated snapshot. Credentials stay outside sna
 
 Verified Jenkins artifacts stay in `JENKINS_AGENT_WORKDIR/artifacts/<id>/all/`.
 The job archives their IDs, manifests, verification records, and promotion evidence.
-CLI artifacts use ignored `infra/.local/pipelines/hero-association/`.
+CLI artifacts use ignored `infra/.local/local/pipelines/hero-association/`.
 See the [pipeline runbook](../README.md) for checksums, image digests,
 eight-image verification, reset audits, and recovery gates.

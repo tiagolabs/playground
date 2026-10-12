@@ -1,6 +1,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - ../../../apps/hero-association/overlays/lab
-  - ../../../apps/lab-identity/overlays/lab
+  - ../../../apps/hero-association/overlays/local
+  - ../../../apps/lab-identity/overlays/local
 # Pix has identity declarations and a reserved namespace; no workload exists yet.

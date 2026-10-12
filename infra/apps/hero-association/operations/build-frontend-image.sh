@@ -11,9 +11,9 @@ if [[ "$map_enabled" != true && "$map_enabled" != false ]]; then
   exit 2
 fi
 
-"$k3d_bin" cluster list cluster-lab >/dev/null
+"$k3d_bin" cluster list tiagolabs-local >/dev/null
 
 (cd "$frontend_dir" && npm ci && npm test && npm run lint && VITE_EXPEDITION_ENABLED="$map_enabled" npm run build)
 docker build --build-arg "VITE_EXPEDITION_ENABLED=$map_enabled" \
   -t hero-association-frontend:k3d "$frontend_dir"
-"$k3d_bin" image import --mode direct -c cluster-lab hero-association-frontend:k3d
+"$k3d_bin" image import --mode direct -c tiagolabs-local hero-association-frontend:k3d

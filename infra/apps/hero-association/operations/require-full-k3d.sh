@@ -7,8 +7,8 @@ kubeconfig="${HERO_ASSOCIATION_K3D_KUBECONFIG:-$KUBECONFIG}"
 [[ -f "$kubeconfig" ]] || { printf 'Missing isolated k3d kubeconfig: %s\n' "$kubeconfig" >&2; exit 1; }
 
 kube=(kubectl --kubeconfig "$kubeconfig")
-[[ "$("${kube[@]}" config current-context)" == k3d-cluster-lab ]] ||
-  { printf 'Refusing a Kubernetes context other than k3d-cluster-lab.\n' >&2; exit 1; }
+[[ "$("${kube[@]}" config current-context)" == k3d-tiagolabs-local ]] ||
+  { printf 'Refusing a Kubernetes context other than k3d-tiagolabs-local.\n' >&2; exit 1; }
 
 for service in core bff expedition market assets world quest frontend; do
   replicas="$("${kube[@]}" -n hero-association get "deployment/$service" -o jsonpath='{.spec.replicas}')"

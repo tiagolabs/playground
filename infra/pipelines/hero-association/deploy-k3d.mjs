@@ -291,7 +291,7 @@ async function recordPromotion(archive, observedPods, coreBootstrapJob) {
   const record = {
     version: 1,
     result: 'passed',
-    cluster: 'k3d-cluster-lab',
+    cluster: 'k3d-tiagolabs-local',
     namespace,
     buildId: archive.buildId,
     promoteComponent: archive.promoteComponent || 'all',
@@ -338,7 +338,7 @@ async function main() {
     throw new Error('Missing isolated k3d kubeconfig: ' + kubeconfig)
   }
   const context = await run('kubectl', [...kubectl, 'config', 'current-context'], { capture: true })
-  if (context !== 'k3d-cluster-lab') {
+  if (context !== 'k3d-tiagolabs-local') {
     throw new Error('Refusing to use Kubernetes context ' + context)
   }
 
@@ -380,7 +380,7 @@ async function main() {
   await prepareArchive(archive.archiveDirectory)
   console.log('Promoting E2E-verified archive ' + archive.buildId + ' (' + archive.archiveSha256 + ')')
   const promotedComponents = archive.promoteComponent ? [archive.promoteComponent] : components
-  await run(k3d, ['image', 'import', '--mode', 'direct', ...promotedComponents.map((component) => archive.images[component].ref), '--cluster', 'cluster-lab'])
+  await run(k3d, ['image', 'import', '--mode', 'direct', ...promotedComponents.map((component) => archive.images[component].ref), '--cluster', 'tiagolabs-local'])
 
   const targetImages = Object.fromEntries(components.map((component) => [component, archive.images[component].ref]))
   const changed = []

@@ -62,7 +62,7 @@ data:
           - type: container
       file_log/envoy:
         include:
-          - /var/log/pods/envoy-gateway-system_envoy-gateway-system-cluster-lab-*_*/envoy/*.log
+          - /var/log/pods/envoy-gateway-system_envoy-gateway-system-tiagolabs-local-*_*/envoy/*.log
         include_file_path: true
         start_at: end
         operators:

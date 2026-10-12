@@ -17,7 +17,7 @@ builds; all jobs run on WSL, not GitHub runners.
 ## Run the complete k3d pipeline
 
 With Docker, Java 25, Node.js 24/npm, `kubectl`, and the isolated k3d lab
-already running, run from `hands-on/`:
+already running, run from `playground/`:
 
 ```bash
 infra/pipelines/hero-association/run-k3d-pipeline.sh
@@ -29,7 +29,7 @@ BFF, Expedition, Market, Assets, World, Quest and frontend once. It archives tho
 disposable k3d archive E2E gate, then deploys them to k3d and runs the
 normal-namespace browser, Expedition, Map, Quest dungeon, and market k6 suites. If any stage
 fails, later stages do not run.
-The archive remains in ignored `infra/.local/pipelines/hero-association/artifacts/<build-id>/all/` for inspection or
+The archive remains in ignored `infra/.local/local/pipelines/hero-association/artifacts/<build-id>/all/` for inspection or
 a later deployment target. The candidate gate uses disposable k3d data and
 does not reset the daily databases. For an intentional schema/seed change in
 the daily k3d game databases, run `./run-k3d-pipeline.sh --reset-game-db`
@@ -43,7 +43,7 @@ Testcontainers host override is needed for this pipeline.
 
 ## Build and verify in separate stages
 
-From `hands-on/`, with Docker, Java 25, Node.js 24, npm,
+From `playground/`, with Docker, Java 25, Node.js 24, npm,
 `kubectl`, and the k3d cluster available for disposable component tests,
 build the seven JVM services and the frontend image in one run:
 
@@ -56,7 +56,7 @@ private, disposable k3d PostgreSQL, Redis, and RabbitMQ. After that namespace
 is removed, Maven packages the JVM services with `-DskipTests` to avoid a
 second container-backed test run. Frontend lint and build remain local, then
 the command builds eight Docker images. It writes a single `images.tar`, SHA-256 checksum,
-and manifest under ignored `infra/.local/pipelines/hero-association/artifacts/<build-id>/all/`. The manifest records
+and manifest under ignored `infra/.local/local/pipelines/hero-association/artifacts/<build-id>/all/`. The manifest records
 the Git revision, whether the source worktree was dirty, and each local image
 ID. The archive is the candidate to promote to multiple deployment targets;
 the older direct-build k3d scripts still use fixed `:k3d` tags.
@@ -67,7 +67,7 @@ Verify and load a completed archive without rebuilding it:
 
 ```bash
 build_id="YOUR_BUILD_ID"
-cd "infra/.local/pipelines/hero-association/artifacts/$build_id/all"
+cd "infra/.local/local/pipelines/hero-association/artifacts/$build_id/all"
 sha256sum --check images.tar.sha256
 docker load --input images.tar
 ```
@@ -83,7 +83,7 @@ infra/pipelines/hero-association/build-local.sh bff demo-001
 infra/pipelines/hero-association/build-local.sh frontend demo-001
 ```
 
-Those commands create separate archives under `infra/.local/pipelines/hero-association/artifacts/demo-001/`. Use a
+Those commands create separate archives under `infra/.local/local/pipelines/hero-association/artifacts/demo-001/`. Use a
 new build ID for every source revision or rebuild; existing image tags and
 artifact paths are deliberately not overwritten. Local dirty changes are
 included in the images but cannot be recreated from the recorded Git commit
@@ -94,12 +94,12 @@ For a single-service build, only that backend service runs its component suite;
 frontend-only builds run lint and build without the component lane. Direct
 `./mvnw package` remains independent and may still use local Testcontainers.
 The archived images must pass the disposable k3d gate before they are
-eligible for local deployment. From `hands-on/`, using the build ID
+eligible for local deployment. From `playground/`, using the build ID
 printed by `build-local.sh`:
 
 ```bash
 (cd projects/hero-association/e2e && npm ci)
-infra/tests/hero-association/test-isolated-stack.sh infra/.local/pipelines/hero-association/artifacts/<build-id>/all
+infra/tests/hero-association/test-isolated-stack.sh infra/.local/local/pipelines/hero-association/artifacts/<build-id>/all
 ```
 
 The runner checks the archive checksum and all eight services’ running Pod image IDs,
@@ -121,7 +121,7 @@ with the other seven live k3d images in a checksummed, eight-image archive. The 
 includes `promote_component`. The archive browser gate tests exactly this
 combination, not an unrelated eight-service rebuild. Build and deploy jobs
 share the retained artifact under the WSL agent work directory at
-`infra/.local/pipelines/hero-association/artifacts/<build-id>/all`; the Jenkins build record stores its ID and small
+`infra/.local/local/pipelines/hero-association/artifacts/<build-id>/all`; the Jenkins build record stores its ID and small
 evidence. A build does not change k3d.
 
 `deploy-k3d.mjs --verify-baseline` checks the seven baseline Deployment
@@ -147,12 +147,12 @@ files. Do not delete retained archives while a deploy job may still use them.
 
 ## Promote the verified archive to k3d
 
-From `hands-on/`, with the isolated k3d lab running:
+From `playground/`, with the isolated k3d lab running:
 
 ```bash
-node infra/pipelines/hero-association/deploy-k3d.mjs infra/.local/pipelines/hero-association/artifacts/<build-id>/all
+node infra/pipelines/hero-association/deploy-k3d.mjs infra/.local/local/pipelines/hero-association/artifacts/<build-id>/all
 # Only when deliberately replacing disposable k3d Core, Assets, Market, World and Quest data:
-node infra/pipelines/hero-association/deploy-k3d.mjs --reset-game-db infra/.local/pipelines/hero-association/artifacts/<build-id>/all
+node infra/pipelines/hero-association/deploy-k3d.mjs --reset-game-db infra/.local/local/pipelines/hero-association/artifacts/<build-id>/all
 ```
 
 This command checks the archive and its passing E2E record before loading
@@ -160,9 +160,9 @@ any of its images into local Docker. It checks the isolated Kubernetes context
 and healthy deployments, imports the same eight image tags to k3d, and rolls
 out Core, BFF, Expedition, Market, Assets, World, Quest, and frontend.
 For a clean automation checkout, set `HERO_ASSOCIATION_K3D_KUBECONFIG` to the
-absolute path of `infra/.local/kubeconfig`, `K3D_BIN`
+absolute path of `infra/.local/local/kubeconfig`, `K3D_BIN`
 to the local k3d binary, and `HERO_ASSOCIATION_LOCAL_CA_CERTIFICATE` to the
-original ignored `infra/.local/tls/local-ca.crt`. Do not copy credentials or keys
+original ignored `infra/.local/local/tls/local-ca.crt`. Do not copy credentials or keys
 into the checkout. The default manual workflow still uses the
 workspace's ignored kubeconfig.
 It resolves each platform image from the verified archive and checks that
@@ -199,7 +199,7 @@ To audit a running deployment against that archive later, without promoting
 or rerunning the suites:
 
 ```bash
-node infra/pipelines/hero-association/deploy-k3d.mjs --verify-only infra/.local/pipelines/hero-association/artifacts/<build-id>/all
+node infra/pipelines/hero-association/deploy-k3d.mjs --verify-only infra/.local/local/pipelines/hero-association/artifacts/<build-id>/all
 ```
 
 The audit checks the archive checksum and passing E2E record, healthy
@@ -209,10 +209,10 @@ Docker images, import to k3d, restart Pods, or write an E2E record.
 
 ## Store the verified archive in the isolated Floci lab
 
-With Floci running as described in [`FLOCI.md`](../../../projects/hero-association/FLOCI.md), run from `hands-on/`:
+With Floci running as described in [`FLOCI.md`](../../../projects/hero-association/FLOCI.md), run from `playground/`:
 
 ```bash
-node infra/pipelines/hero-association/publish-floci.mjs infra/.local/pipelines/hero-association/artifacts/<build-id>/all
+node infra/pipelines/hero-association/publish-floci.mjs infra/.local/local/pipelines/hero-association/artifacts/<build-id>/all
 ```
 
 This uploads the same verified archive and evidence to emulated S3 and checks
@@ -255,7 +255,7 @@ node infra/pipelines/hero-association/provision-floci-keycloak-db.mjs
 These commands create or verify independent private PostgreSQL 18.6 RDS
 instances on the Floci Docker network: Core at `floci:7001/hero_association`
 and Keycloak at `floci:7002/keycloak`. Each gets a different generated password
-in an owner-only, ignored credential file under `infra/.local/pipelines/hero-association/artifacts/`. No database
+in an owner-only, ignored credential file under `infra/.local/local/pipelines/hero-association/artifacts/`. No database
 port is published on the host. The full application deployment remains
 pending; see [`FLOCI.md`](../../../projects/hero-association/FLOCI.md#core-and-keycloak-databases-opt-in).
 
@@ -278,7 +278,7 @@ recreate it and invalidate any sessions; see
 
 World and Quest each use separate PostgreSQL accounts and databases. To add
 these owners to the existing Assets lab, build and verify a full eight-image
-archive, run `infra/apps/hero-association/operations/stage-world-quest.sh ARCHIVE` from `hands-on/`,
+archive, run `infra/apps/hero-association/operations/stage-world-quest.sh ARCHIVE` from `playground/`,
 restore full k3d mode, then promote that same archive with
 `node infra/pipelines/hero-association/deploy-k3d.mjs --reset-game-db ARCHIVE`. Staging adds the two
 dependencies, Keycloak audiences and service identities. The coupled reset

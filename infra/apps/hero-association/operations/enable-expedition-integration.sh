@@ -5,13 +5,13 @@ script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 source "$script_dir/../../../scripts/application.sh" hero-association
 export KUBECONFIG="$KUBECONFIG"
 namespace=hero-association
-patch_dir="$app_dir/overlays/lab"
+patch_dir="$app_dir/overlays/local"
 
 if [[ $# -ne 0 ]]; then
   printf 'Usage: %s\n' "$0" >&2
   exit 2
 fi
-if [[ ! -f "$KUBECONFIG" || "$(kubectl config current-context)" != 'k3d-cluster-lab' ]]; then
+if [[ ! -f "$KUBECONFIG" || "$(kubectl config current-context)" != 'k3d-tiagolabs-local' ]]; then
   printf 'Refusing to enable Expedition outside the isolated hero-association k3d context.\n' >&2
   exit 1
 fi

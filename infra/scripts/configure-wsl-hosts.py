@@ -13,7 +13,7 @@ for line in hosts.read_text().splitlines():
         if not names: continue
         line = parts[0]+'\t'+' '.join(names)+(' #'+comment if comment else '')
     lines.append(line)
-lines.append('127.0.0.2 heroassociation.test identity.lab.test auth.lab.test pix.lab.test app.e2e.heroassociation.test auth.e2e.heroassociation.test # cluster-lab')
+lines.append('127.0.0.2 heroassociation.test identity.lab.test auth.lab.test pix.lab.test app.e2e.heroassociation.test auth.e2e.heroassociation.test # tiagolabs-local')
 hosts.write_text('\n'.join(lines)+'\n')
 # WSL otherwise regenerates /etc/hosts at startup.
 config=Path('/etc/wsl.conf')

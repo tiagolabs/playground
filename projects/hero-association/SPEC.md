@@ -824,9 +824,9 @@ alias. A reset cannot safely roll back to older images after replacing data.
 ## Shared lab platform
 
 Hero source, build definitions, and application tests live in
-`hands-on/projects/hero-association/`.
+`playground/projects/hero-association/`.
 
-The active cluster is `cluster-lab` (`k3d-cluster-lab`). Shared configuration,
+The active cluster is `tiagolabs-local` (`k3d-tiagolabs-local`). Shared configuration,
 bootstrap scripts, Gateway, Keycloak/PostgreSQL, Istio control plane,
 observability, and Jenkins controller/agent belong to `../../infra/`. Hero's
 workloads, routes, mesh policies, identity declarations, and operations are in
@@ -845,7 +845,7 @@ Hybrid restore serializes explicit commands and host-process cleanup, and succee
 when the other path has already restored the original deployment and Service.
 Gateway probes and full-stack gates reserve a shared application test lock so
 concurrent commands cannot compete for the same E2E hostnames.
-All project HTTPRoutes attach to Gateway `cluster-lab` in `gateway-system`.
+All project HTTPRoutes attach to Gateway `tiagolabs-local` in `gateway-system`.
 The stable game URL is `https://heroassociation.test` on `127.0.0.2:443`,
 coexisting with Raydow on `127.0.0.1:443`. Lab Identity and Pix use separate
 namespaces and client grants. Kong is deferred. Game-only deployment and data

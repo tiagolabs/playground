@@ -48,13 +48,13 @@ printf 'Pre-commit snapshot: %s (dirty=%s)\n' "$source_revision" "$source_dirty"
 node --test --test-isolation=none "$snapshot_repo/infra/pipelines/hero-association/rollback-k3d.test.mjs"
 "$snapshot_repo/infra/pipelines/hero-association/build-local.sh" all "$build_id"
 
-artifact_dir="$snapshot_repo/infra/.local/pipelines/hero-association/artifacts/$build_id/all"
+artifact_dir="$snapshot_repo/infra/.local/local/pipelines/hero-association/artifacts/$build_id/all"
 cp "$artifact_dir/manifest.txt" "$evidence_dir/manifest.txt"
 (
   cd "$snapshot_repo/projects/hero-association/e2e"
   npm ci
 )
-HERO_ASSOCIATION_LOCAL_CA_CERTIFICATE="${HERO_ASSOCIATION_LOCAL_CA_CERTIFICATE:-$source_repo/infra/.local/tls/local-ca.crt}" \
+HERO_ASSOCIATION_LOCAL_CA_CERTIFICATE="${HERO_ASSOCIATION_LOCAL_CA_CERTIFICATE:-$source_repo/infra/.local/local/tls/local-ca.crt}" \
   "$snapshot_repo/infra/tests/hero-association/test-isolated-stack.sh" "$artifact_dir"
 cp "$artifact_dir/k3d-e2e-verification.json" "$evidence_dir/k3d-e2e-verification.json"
 printf 'Pre-commit build and disposable k3d E2E passed; nothing was deployed.\n'

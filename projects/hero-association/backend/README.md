@@ -1,10 +1,10 @@
-> Deployment and CI configuration is centralized in [hands-on/infra](../../../infra/README.md).
-> Run infrastructure commands from `hands-on/`; Maven and standalone Compose
+> Deployment and CI configuration is centralized in [playground/infra](../../../infra/README.md).
+> Run infrastructure commands from `playground/`; Maven and standalone Compose
 > workflows retain the working directories documented below. Hero operations are in
 > `infra/apps/hero-association/`, delivery in `infra/pipelines/hero-association/`,
 > and cluster test runners in `infra/tests/hero-association/`.
 
-> Daily development uses the shared [Cluster Lab infrastructure](../../../infra/README.md)
+> Daily development uses the shared [TiagoLabs Local infrastructure](../../../infra/README.md)
 > and [Lab Identity](../../lab-identity/README.md). Run the backend independently
 > through Maven or the existing standalone Compose fixtures. Compose uses its
 > private `hero-association` test realm; daily k3d/hybrid uses realm `lab` and
@@ -238,10 +238,10 @@ on all host interfaces and the bridge uses Docker Desktop's host route.
 The default development environment is the k3d cluster with Envoy Gateway,
 Keycloak, PostgreSQL, Redis, RabbitMQ, and observability. Run any selected
 service on WSL with Quarkus hot reload using one reversible command from
-`hands-on/`:
+`playground/`:
 
 ```bash
-k3d cluster start cluster-lab
+k3d cluster start tiagolabs-local
 infra/apps/hero-association/operations/hybrid.sh run core
 infra/apps/hero-association/operations/hybrid.sh run bff
 infra/apps/hero-association/operations/hybrid.sh run expedition
@@ -308,9 +308,9 @@ and realm-reset tests use a disposable E2E namespace or standalone fixture.
 ## Local HTTPS gateway
 
 Shared Envoy Gateway serves Hero Association, Lab Identity, and Keycloak.
-Run `infra/scripts/configure-hosts.sh` from `hands-on/` to configure WSL and
+Run `infra/scripts/configure-hosts.sh` from `playground/` to configure WSL and
 Windows aliases on `127.0.0.2` and trust the shared development CA. Hero's
-ignored `../../../infra/.local/tls/` links to the shared certificates. See the
+ignored `../../../infra/.local/local/tls/` links to the shared certificates. See the
 [infra runbook](../../../infra/README.md) for setup and the Windows offline-CA
 curl caveat. Never commit CA or leaf private keys.
 
@@ -320,11 +320,11 @@ The repository-level [`../e2e`](../e2e) Playwright project verifies
 registration, session continuity, agency actions, market limits, and
 Map/Expedition through a disposable k3d namespace and Envoy Gateway. For a
 build-once candidate, create the eight-image archive in
-[`../pipeline`](../../../infra/pipelines/hero-association/README.md), then from `hands-on/` run:
+[`../pipeline`](../../../infra/pipelines/hero-association/README.md), then from `playground/` run:
 
 ```bash
 (cd projects/hero-association/e2e && npm ci)
-infra/tests/hero-association/test-isolated-stack.sh infra/.local/pipelines/hero-association/artifacts/<build-id>/all
+infra/tests/hero-association/test-isolated-stack.sh infra/.local/local/pipelines/hero-association/artifacts/<build-id>/all
 ```
 
 This checks both disposable RabbitMQ role ACLs over AMQP, exact Pod image

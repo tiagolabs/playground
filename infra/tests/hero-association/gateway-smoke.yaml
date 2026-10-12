@@ -48,7 +48,7 @@ metadata:
   namespace: hero-association
 spec:
   parentRefs:
-    - name: cluster-lab
+    - name: tiagolabs-local
       namespace: gateway-system
       sectionName: https
   hostnames:

@@ -43,8 +43,8 @@ cleanup() {
 }
 trap cleanup EXIT
 
-if [[ ! -f "$kubeconfig" || "$(kc config current-context)" != k3d-cluster-lab ]]; then
-  printf 'This test requires the k3d-cluster-lab kubeconfig.\n' >&2
+if [[ ! -f "$kubeconfig" || "$(kc config current-context)" != k3d-tiagolabs-local ]]; then
+  printf 'This test requires the k3d-tiagolabs-local kubeconfig.\n' >&2
   exit 1
 fi
 if kc get namespace "$namespace" >/dev/null 2>&1; then

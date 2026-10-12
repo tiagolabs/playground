@@ -33,7 +33,7 @@ export function assembleRealm(base, users, projects, secrets) {
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const infra = resolve(dirname(fileURLToPath(import.meta.url)), '..');
   const workspace = resolve(infra, '..');
-  const privateDir = resolve(infra, '.local/identity');
+  const privateDir = resolve(infra, '.local/local/identity');
   mkdirSync(privateDir, { recursive: true, mode: 0o700 });
   const secrets = {};
   for (const key of ['KEYCLOAK_DATABASE_PASSWORD','KEYCLOAK_ADMIN_PASSWORD','HERO_ASSOCIATION_BFF_OIDC_CLIENT_SECRET','LAB_IDENTITY_OIDC_CLIENT_SECRET','LAB_IDENTITY_ADMIN_CLIENT_SECRET','LAB_IDENTITY_STATE_SECRET','LAB_IDENTITY_CSRF_SECRET']) {
@@ -43,7 +43,7 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   }
   const read = path => JSON.parse(readFileSync(path, 'utf8'));
   const realm = assembleRealm(read(resolve(infra, 'platform/identity/realm.json')), read(resolve(infra, 'platform/identity/users.json')),
-    read(resolve(infra, 'clusters/lab/identity.json')).applications.map(p => read(resolve(infra, 'apps', p, 'identity/clients.json'))), secrets);
+    read(resolve(infra, 'clusters/local/identity.json')).applications.map(p => read(resolve(infra, 'apps', p, 'identity/clients.json'))), secrets);
   writeFileSync(resolve(privateDir, 'lab-realm.json'), JSON.stringify(realm, null, 2), { mode: 0o600 });
   console.log('Generated shared realm with scoped application clients.');
 }

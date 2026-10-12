@@ -72,7 +72,7 @@ async function main() {
   }
   if (existsSync(destination)) throw new Error(`Artifact already exists: ${destination}`)
   const context = await command('kubectl', ['--kubeconfig', kubeconfig, 'config', 'current-context'])
-  if (context !== 'k3d-cluster-lab') throw new Error(`Refusing Kubernetes context ${context}`)
+  if (context !== 'k3d-tiagolabs-local') throw new Error(`Refusing Kubernetes context ${context}`)
 
   await prepareArchive(candidateDirectory)
   const images = {}

@@ -4,10 +4,10 @@ import { readFileSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 const infra=resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const env={...process.env,KUBECONFIG:process.env.LAB_KUBECONFIG || resolve(infra,'.local/kubeconfig')};
-if(execFileSync('kubectl',['config','current-context'],{env,encoding:'utf8'}).trim()!=='k3d-cluster-lab') throw new Error('Refusing identity changes outside cluster-lab');
-const realm=JSON.parse(readFileSync(resolve(infra,'.local/identity/lab-realm.json'),'utf8'));
-const password=readFileSync(resolve(infra,'.local/identity/KEYCLOAK_ADMIN_PASSWORD'),'utf8').trim();
+const env={...process.env,KUBECONFIG:process.env.LAB_KUBECONFIG || resolve(infra,'.local/local/kubeconfig')};
+if(execFileSync('kubectl',['config','current-context'],{env,encoding:'utf8'}).trim()!=='k3d-tiagolabs-local') throw new Error('Refusing identity changes outside tiagolabs-local');
+const realm=JSON.parse(readFileSync(resolve(infra,'.local/local/identity/lab-realm.json'),'utf8'));
+const password=readFileSync(resolve(infra,'.local/local/identity/KEYCLOAK_ADMIN_PASSWORD'),'utf8').trim();
 const forward=spawn('kubectl',['-n','identity','port-forward','--address','127.0.0.1','service/keycloak',':8080'],{env,stdio:['ignore','pipe','pipe']});
 try {
  const port=await new Promise((yes,no)=>{let output='';const timer=setTimeout(()=>no(new Error('Identity port-forward timed out')),20000);forward.stdout.on('data',chunk=>{output+=chunk;const match=output.match(/127\.0\.0\.1:(\d+)/);if(match){clearTimeout(timer);yes(match[1]);}});forward.once('exit',()=>{clearTimeout(timer);no(new Error('Identity port-forward stopped'));});});

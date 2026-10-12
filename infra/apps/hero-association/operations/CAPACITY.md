@@ -9,7 +9,7 @@ k3d cluster. The normal BFF and Core Deployments remain running.
 First build/import the JVM images and deploy the k3d backend and frontend as
 described in [README.md](README.md). Docker, Node/npm, kubectl, OpenSSL, the
 ignored k3d kubeconfig, and the E2E dependencies (`cd ../../e2e && npm ci`)
-must be available. From `hands-on/`:
+must be available. From `playground/`:
 
 ```bash
 infra/tests/hero-association/test-mixed-capacity.sh

@@ -19,7 +19,7 @@ spec:
       podSelector:
         matchLabels:
           app.kubernetes.io/component: proxy
-          gateway.envoyproxy.io/owning-gateway-name: cluster-lab
+          gateway.envoyproxy.io/owning-gateway-name: tiagolabs-local
     ports:
     - protocol: TCP
       port: 80

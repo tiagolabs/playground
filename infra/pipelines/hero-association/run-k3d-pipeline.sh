@@ -32,7 +32,7 @@ if [[ ! -f "$kubeconfig" ]]; then
   exit 1
 fi
 context="$(kubectl --kubeconfig "$kubeconfig" config current-context)"
-if [[ "$context" != 'k3d-cluster-lab' ]]; then
+if [[ "$context" != 'k3d-tiagolabs-local' ]]; then
   printf 'Refusing to use Kubernetes context: %s\n' "$context" >&2
   exit 1
 fi
@@ -51,7 +51,7 @@ stage='disposable k3d archive E2E'
   npm ci
 )
 if [[ -z "${HERO_ASSOCIATION_LOCAL_CA_CERTIFICATE:-}" && -n "${HERO_ASSOCIATION_SOURCE_REPO:-}" ]]; then
-  export HERO_ASSOCIATION_LOCAL_CA_CERTIFICATE="$HERO_ASSOCIATION_SOURCE_REPO/infra/.local/tls/local-ca.crt"
+  export HERO_ASSOCIATION_LOCAL_CA_CERTIFICATE="$HERO_ASSOCIATION_SOURCE_REPO/infra/.local/local/tls/local-ca.crt"
 fi
 "$tests_dir/test-isolated-stack.sh" "$artifact_dir"
 

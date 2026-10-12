@@ -5,13 +5,13 @@ script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 source "$script_dir/../../scripts/application.sh" hero-association
 export KUBECONFIG="$KUBECONFIG"
 
-if [[ ! -f "$KUBECONFIG" || "$(kubectl config current-context)" != 'k3d-cluster-lab' ]]; then
+if [[ ! -f "$KUBECONFIG" || "$(kubectl config current-context)" != 'k3d-tiagolabs-local' ]]; then
   printf 'Use the isolated hero-association k3d kubeconfig first.\n' >&2
   exit 1
 fi
 
 gateway_namespace=envoy-gateway-system
-proxy_selector='app.kubernetes.io/component=proxy,gateway.envoyproxy.io/owning-gateway-name=cluster-lab'
+proxy_selector='app.kubernetes.io/component=proxy,gateway.envoyproxy.io/owning-gateway-name=tiagolabs-local'
 mapfile -t proxy_deployments < <(kubectl -n "$gateway_namespace" get deployments -l "$proxy_selector" -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}{end}')
 if [[ ${#proxy_deployments[@]} -ne 1 ]]; then
   printf 'Expected exactly one generated Hero Association Envoy proxy Deployment.\n' >&2

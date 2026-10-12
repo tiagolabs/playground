@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 source "$(dirname -- "${BASH_SOURCE[0]}")/../scripts/common.sh"
 umask 077
-cert_dir="$infra_dir/.local/tls"
+cert_dir="$infra_dir/.local/local/tls"
 mkdir -p "$cert_dir"
 if [[ ! -s "$cert_dir/local-ca.key" ]]; then
-  openssl req -x509 -newkey rsa:3072 -sha256 -nodes -days 3650 -subj '/CN=Cluster Lab development CA' \
+  openssl req -x509 -newkey rsa:3072 -sha256 -nodes -days 3650 -subj '/CN=TiagoLabs Local development CA' \
     -keyout "$cert_dir/local-ca.key" -out "$cert_dir/local-ca.crt" \
     -addext 'basicConstraints=critical,CA:TRUE' -addext 'keyUsage=critical,keyCertSign,cRLSign'
 fi

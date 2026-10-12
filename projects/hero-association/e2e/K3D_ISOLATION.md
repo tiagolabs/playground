@@ -11,7 +11,7 @@ The Gateway has dedicated HTTPS listeners for the two E2E hostnames. Only a
 namespace labeled `heroassociation.test/e2e-gateway=true` may attach routes to
 those listeners. The E2E leaf certificate is signed by the existing ignored
 local CA, so no second CA trust installation is needed. Private keys stay in
-`infra/.local/tls/`, not Git. The normal HTTPS listener still accepts only routes
+`infra/.local/local/tls/`, not Git. The normal HTTPS listener still accepts only routes
 from the daily `hero-association` namespace.
 
 To prove route and TLS isolation without touching accounts or databases, run:
@@ -31,12 +31,12 @@ resources, E2E routes, issuer settings, and no autoscalers. Run it through the
 script, not with `kubectl apply -k`: the script generates private credentials,
 bootstraps the test databases and RabbitMQ, and cleans up the namespace.
 
-From `hands-on/`, run either a smoke with the eight images currently
+From `playground/`, run either a smoke with the eight images currently
 deployed in the daily k3d namespace or an exact archived candidate check:
 
 ```bash
 infra/tests/hero-association/test-isolated-stack.sh
-infra/tests/hero-association/test-isolated-stack.sh infra/.local/pipelines/hero-association/artifacts/<build-id>/all
+infra/tests/hero-association/test-isolated-stack.sh infra/.local/local/pipelines/hero-association/artifacts/<build-id>/all
 ```
 
 Both modes require Java 25 and the backend Maven wrapper for an AMQP

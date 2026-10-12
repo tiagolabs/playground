@@ -28,7 +28,7 @@ The default local environment is the k3d cluster with Envoy Gateway and its
 shared infrastructure. From `infra/apps/hero-association/operations`, run:
 
 ```bash
-k3d cluster start cluster-lab
+k3d cluster start tiagolabs-local
 ./hybrid.sh run frontend
 ```
 
@@ -101,7 +101,7 @@ the commands above are smoke checks against the running development data.
 ## Deploy to the isolated k3d lab
 
 The k3d frontend is a production-built Nginx image, not the Vite dev server.
-Build and deploy it after the k3d backend from `hands-on/`:
+Build and deploy it after the k3d backend from `playground/`:
 
 ```bash
 infra/apps/hero-association/operations/build-frontend-image.sh
