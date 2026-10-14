@@ -5,7 +5,13 @@ Only `identity/clients.json` exists today. Platform policies reserve the
 deployment role. The Keycloak clients are registered through
 `infra/clusters/local/identity.json`; independent `app-user` grants are supported.
 
-Add source in `playground/projects/pix-integration/`, workloads in `base/`, daily configuration
-in `overlays/local/`, and delivery scripts in `infra/pipelines/pix-integration/`
-when the application is defined. Enable its overlay in the cluster's apps
-composition only when there is a deployable application.
+Application planning now lives under
+[payment-integrations](../../../projects/payment-integrations/README.md), with a
+separate [checkout-demo](../../../projects/payment-integrations/examples/checkout-demo/README.md)
+consumer project. The existing `pix-integration` infrastructure identifiers are
+a legacy reservation and have not been renamed.
+
+Add workloads in `base/`, daily configuration in `overlays/local/`, and delivery
+scripts under `infra/pipelines/` when application deployment names are finalized.
+Enable an overlay in the cluster's apps composition only when there is a
+deployable application.
