@@ -29,9 +29,9 @@ public class AdminWorkflowTest {
     @Test void grantsAreIndependentAndRevocationEndsSessions(){
         String path="/api/v1/admin/users/"+MockKeycloak.USER+"/applications/";
         mutation().body("{\"granted\":true}").put(path+"hero-association").then().statusCode(204);
-        mutation().body("{\"granted\":true}").put(path+"pix-integration").then().statusCode(204);
+        mutation().body("{\"granted\":true}").put(path+"payment-integrations").then().statusCode(204);
         mutation().body("{\"granted\":false}").put(path+"hero-association").then().statusCode(204);
-        given().get("/api/v1/admin/users/"+MockKeycloak.USER).then().statusCode(200).body("applications.find { it.id == 'hero-association' }.granted",is(false)).body("applications.find { it.id == 'pix-integration' }.granted",is(true));
+        given().get("/api/v1/admin/users/"+MockKeycloak.USER).then().statusCode(200).body("applications.find { it.id == 'hero-association' }.granted",is(false)).body("applications.find { it.id == 'payment-integrations' }.granted",is(true));
         assertTrue(MockKeycloak.writes.contains("POST /users/"+MockKeycloak.USER+"/logout"));
     }
     @Test void arbitraryClientAndSelfServiceRevocationAreRejected(){

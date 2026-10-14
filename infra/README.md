@@ -8,7 +8,7 @@ playground/
   projects/
     lab-identity/            account and application-access management
     hero-association/        game source and application tests
-    pix-integration/         future application source
+    payment-integrations/    reusable payment service and separate checkout example
   infra/
     clusters/local/k3d.yaml    k3d configuration
     clusters/local/platform/  enabled platform composition
@@ -45,7 +45,12 @@ Cluster name: `tiagolabs-local`; Kubernetes context: `k3d-tiagolabs-local`. One 
 | `observability` | shared telemetry services |
 | `lab-identity` | identity management backend/frontend and session Redis |
 | `hero-association` | game services, databases, caches, and broker |
-| `pix-integration` | reserved future application namespace |
+| `payment-integrations` | reserved future application namespace |
+
+The payment-integrations reservation above describes versioned configuration.
+Its canonical namespace, client, catalogue, and `payments.lab.test` hostname
+require coordinated rollout to an existing lab; this naming change has not
+applied that rollout. See [the reservation runbook](apps/payment-integrations/README.md).
 
 Application HTTPRoutes reference `tiagolabs-local` in `gateway-system`. Namespaces must opt in with `lab.test/gateway: "true"`. Test-only listeners accept only namespaces with `heroassociation.test/e2e-gateway: "true"`. Kong is deferred.
 
@@ -69,7 +74,7 @@ Host setup updates only lab aliases in WSL and Windows and trusts the developmen
 | https://identity.lab.test | Lab Identity |
 | https://auth.lab.test | Keycloak |
 | https://heroassociation.test | Hero Association |
-| https://pix.lab.test | reserved, application not deployed |
+| https://payments.lab.test | reserved, application not deployed |
 
 The CA/key and leaf certificate live in `.local/local/tls/`. Application/test certificate paths link to that authority. Windows curl may require `--ssl-revoke-best-effort` because this development CA has no online revocation service.
 
@@ -85,9 +90,9 @@ Mailpit: http://localhost:18025. Grafana: http://localhost:13000, user `admin`; 
 
 ## Identity contract
 
-One shared realm, `lab`, gives users SSO. Explicit client-scoped `app-user` grants determine application entry. New users inherit only `lab-identity-api:app-user`. Hero and Pix are independent grants; SSO alone gives neither. `lab-identity-api:identity-admin` controls user administration. Additional functional client roles can be introduced when application behavior needs them.
+One shared realm, `lab`, gives users SSO. Explicit client-scoped `app-user` grants determine application entry. New users inherit only `lab-identity-api:app-user`. Hero Association and payment-integrations are independent grants; SSO alone gives neither. `lab-identity-api:identity-admin` controls user administration. Additional functional client roles can be introduced when application behavior needs them.
 
-Application declarations live in `apps/<application>/identity/clients.json`. `clusters/local/identity.json` selects the registered applications, including planned Pix. The shared generator combines them with bootstrap users and private secrets. The rendered realm contains credentials and is mounted from a Kubernetes Secret. Hero maps one logical application to its BFF and six resource-server clients. Its canonical `hero-association:app-user` role gates all user APIs. Tokens retain each resource server's audience and contain only client roles permitted by their login client's scope mappings. Lab Identity tokens target `lab-identity-api`.
+Application declarations live in `apps/<application>/identity/clients.json`. `clusters/local/identity.json` selects the registered applications, including planned payment-integrations. The shared generator combines them with bootstrap users and private secrets. The rendered realm contains credentials and is mounted from a Kubernetes Secret. Hero maps one logical application to its BFF and six resource-server clients. Its canonical `hero-association:app-user` role gates all user APIs. Tokens retain each resource server's audience and contain only client roles permitted by their login client's scope mappings. Lab Identity tokens target `lab-identity-api`.
 
 Keycloak stores users, passwords, profile fields, and grants. Its built-in `account:manage-account` and `account:view-profile` roles are shared self-service defaults so members can open account security from their profile. Human bootstrap fixtures explicitly receive the realm default role; service accounts do not. Hero stores game accounts linked through the immutable Keycloak `sub`; it still provisions a game account and asks for a Manager name after access is granted. Lab Identity does not duplicate grants or credentials in another database.
 
@@ -112,7 +117,7 @@ The private controller password is in `infra/.local/local/ci/jenkins/.env`. Cont
 
 ## Adding a project
 
-Create a source project under `projects/<project>/` with its SPEC, Dockerfiles, build definitions, and tests. Add deployment configuration under `infra/apps/<application>/`, a namespace budget/network/RBAC policy under `platform/policies/`, and delivery runners under `pipelines/<application>/`. Add its enabled lab overlay to `clusters/local/apps/kustomization.yaml`, identity declaration to `clusters/local/identity.json`, and an allowlisted catalogue entry to Lab Identity. Source and infrastructure directories use the same project name. Shared path helpers accept existing application directories with lowercase names separated by hyphens. Declare its Jenkins jobs in `ci/jenkins/jobs/` and mount them in Compose/CasC. Keep application secrets, data stores, mesh rules, and service audiences separate. Pix currently has only identity declarations and a reserved namespace; no Pix workload is deployed.
+Create a source project under `projects/<project>/` with its SPEC, Dockerfiles, build definitions, and tests. Add deployment configuration under `infra/apps/<application>/`, a namespace budget/network/RBAC policy under `platform/policies/`, and delivery runners under `pipelines/<application>/`. Add its enabled lab overlay to `clusters/local/apps/kustomization.yaml`, identity declaration to `clusters/local/identity.json`, and an allowlisted catalogue entry to Lab Identity. Source and infrastructure directories use the same project name. Shared path helpers accept existing application directories with lowercase names separated by hyphens. Declare its Jenkins jobs in `ci/jenkins/jobs/` and mount them in Compose/CasC. Keep application secrets, data stores, mesh rules, and service audiences separate. payment-integrations currently has only identity declarations and a reserved namespace; no payment workload is deployed.
 
 Image imports use k3d's [direct mode](https://k3d.io/stable/usage/importing_images/), avoiding a tools-container download while preserving the same image digests.
 
@@ -177,7 +182,7 @@ printing k3d metadata or secrets. `check` is read-only and returns nonzero for
 failed readiness checks: explicit kubeconfig context, all three nodes, Gateway
 programming, identity/Lab Identity workloads, host DNS and OS-trusted HTTPS,
 Keycloak issuer, Jenkins controller, and connected WSL agent. It does not check
-Hero gameplay or the planned Pix application. `stop` stops this agent, controller,
+Hero gameplay or the planned payment-integrations application. `stop` stops this agent, controller,
 and cluster while retaining Docker volumes and private state. Lifecycle commands
 share a lock and always name this cluster; they never use `--all`.
 

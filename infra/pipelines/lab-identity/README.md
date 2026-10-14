@@ -69,6 +69,6 @@ Jenkins jobs on the shared controller:
 - `lab-identity-deploy`: required `CANDIDATE_ID`; promote without rebuilding.
 - `lab-identity-rollback`: explicit restoration using deployment history.
 
-The retained archive and explicit promotion pattern can be used for Pix's future
+The retained archive and explicit promotion pattern can be used for payment-integrations' future
 delivery scripts. Application configuration remains under `infra/apps/`, source
 under `projects/`, and generated artifacts under `infra/.local/local/`.

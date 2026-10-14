@@ -6,6 +6,10 @@ This is a planned project in `tiagolabs/playground`. The directory currently
 contains documentation; no application, provider adapter, API, Docker image, or
 checkout example has been implemented.
 
+The [roadmap](ROADMAP.md) tracks completed planning, implementation milestones,
+and completion evidence. Use it for progress; this specification defines scope
+and required behavior.
+
 The goal is a reusable payment service that consuming applications can deploy
 and integrate through a public contract. It owns payment operations and provider
 communication while each consumer retains its products, prices, orders, and
@@ -32,11 +36,16 @@ added. See [naming and references](docs/references.md).
   application with independent build, configuration, data, access, and deployment.
 - Follow workspace ownership for operational configuration under `infra/`.
 
-The existing `pix-integration` namespace and identity client remain a legacy
-reservation. Final deployment identifiers must be mapped deliberately during
-implementation; these documents do not rename or deploy infrastructure.
+The versioned namespace and Keycloak role client use `payment-integrations`;
+the reserved browser hostname is `payments.lab.test`. The planned Lab Identity
+entry uses that same application identity. Applying these declarations to an
+existing lab and retiring obsolete reservations is a coordinated rollout task
+in the roadmap; the current change does not deploy payment workloads.
 
 ## Initial scope
+
+MVP 1 is Pix through Mercado Pago. Complete the safe payment lifecycle and
+separate checkout example before adding a second provider.
 
 1. A Mercado Pago adapter for Pix using the documented Orders API integration
    and its supported test flow.
@@ -49,11 +58,25 @@ implementation; these documents do not rename or deploy infrastructure.
 7. A separate checkout example demonstrating one fictional product and
    idempotent fulfillment.
 
-Additional providers can be introduced behind the same contract when needed.
-Provider-specific capabilities and customer actions must remain explicit; a
+Stripe is the next provider after MVP 1; it belongs to this same application.
+Additional providers can follow concrete use cases. Provider-specific
+capabilities and customer actions must remain explicit; a
 common API does not imply every provider supports every payment method or
 operation. Advanced routing, subscriptions, and card vaulting are outside the
 initial scope.
+
+## Phase 2: Stripe
+
+Add a Stripe adapter after the Mercado Pago Pix flow and acceptance checks are
+complete. The recommended first Stripe flow is card payments through a hosted
+Checkout page, returning a checkout URL through the common payment contract.
+Confirm that flow during phase-2 planning. See [Stripe Checkout](https://docs.stripe.com/payments/checkout).
+
+Reuse payment identities, attempts, ownership checks, outbox delivery, and
+consumer fulfillment safeguards. Verify Stripe notifications and authoritative
+payment state; a browser return URL is not payment confirmation. Extend the
+same checkout-demo with a second payment flow rather than create a Stripe-only
+application. See [Stripe fulfillment](https://docs.stripe.com/checkout/fulfillment?payment-ui=stripe-hosted).
 
 ## Data and integration responsibilities
 
@@ -109,8 +132,8 @@ They are acceptance criteria to implement and test, not current test results.
   mechanism.
 - Supported sandbox fixtures, provider reconciliation behavior, retry policy,
   and handling of settlements needing review.
-- Application deployment identifiers and the externally reachable HTTPS route
-  required for provider notifications.
+- Final console and consumer service-account identities and the externally
+  reachable HTTPS route required for provider notifications.
 
 Resolve these during implementation planning without weakening the agreed
 ownership boundaries or safety invariants.

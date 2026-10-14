@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { assembleRealm } from './generate-realm.mjs';
 const read = path => JSON.parse(readFileSync(new URL(path, import.meta.url)));
-const declarations=['hero-association','lab-identity','pix-integration'].map(p=>read(`../apps/${p}/identity/clients.json`));
+const declarations=read('../clusters/local/identity.json').applications.map(p=>read(`../apps/${p}/identity/clients.json`));
 const secrets=Object.fromEntries(['HERO_ASSOCIATION_BFF_OIDC_CLIENT_SECRET','LAB_IDENTITY_OIDC_CLIENT_SECRET','LAB_IDENTITY_ADMIN_CLIENT_SECRET'].map(k=>[k,'test-secret']));
 const realm=assembleRealm(read('../platform/identity/realm.json'),read('../platform/identity/users.json'),declarations,secrets);
 test('realm clients have bounded scope and browser clients use PKCE',()=>{
@@ -22,7 +22,7 @@ test('only self-service access is a default entitlement',()=>{
     'lab-identity-api':['app-user'],
   });
   assert.ok(!realm.roles.realm[0].composites.client['hero-association']);
-  assert.ok(!realm.roles.realm[0].composites.client['pix-integration']);
+  assert.ok(!realm.roles.realm[0].composites.client['payment-integrations']);
 });
 test('service account is limited and fixture subjects remain stable',()=>{
   const admin=realm.users.find(u=>u.serviceAccountClientId==='lab-identity-admin');

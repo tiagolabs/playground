@@ -3,4 +3,4 @@ kind: Kustomization
 resources:
   - ../../../apps/hero-association/overlays/local
   - ../../../apps/lab-identity/overlays/local
-# Pix has identity declarations and a reserved namespace; no workload exists yet.
+# payment-integrations has identity declarations and a reserved namespace; no workload exists yet.

@@ -58,4 +58,4 @@ Certificates and kubeconfig are in `infra/.local/local/`; project-local compatib
 paths have been removed. Capacity and outage runners are in `infra/tests/hero-association/`.
 
 See [Lab Identity manual testing](../../../../projects/lab-identity/MANUAL_TEST.md)
-for explicit Hero/Pix grants. A login without Hero access does not provision a game account.
+for explicit Hero/payment-integrations grants. A login without Hero access does not provision a game account.

@@ -35,6 +35,6 @@ metadata:
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: pix-integration
+  name: payment-integrations
   labels:
     lab.test/gateway: "true"

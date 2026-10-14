@@ -4,4 +4,4 @@ resources:
   - namespaces.yaml
   - hero-association
   - lab-identity
-  - pix-integration
+  - payment-integrations

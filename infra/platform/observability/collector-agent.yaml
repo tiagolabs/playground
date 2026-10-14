@@ -16,7 +16,7 @@ data:
               kubernetes_sd_configs:
                 - role: pod
                   namespaces:
-                    names: [hero-association, lab-identity, pix-integration, identity, envoy-gateway-system]
+                    names: [hero-association, lab-identity, payment-integrations, identity, envoy-gateway-system]
               relabel_configs:
                 - source_labels: [__meta_kubernetes_pod_node_name]
                   regex: ${env:K8S_NODE_NAME}
@@ -78,7 +78,7 @@ data:
       filter/pod_scope:
         error_mode: ignore
         metric_conditions:
-          - 'not IsMatch(resource.attributes["k8s.namespace.name"], "^(hero-association|lab-identity|pix-integration|identity|envoy-gateway-system)$")'
+          - 'not IsMatch(resource.attributes["k8s.namespace.name"], "^(hero-association|lab-identity|payment-integrations|identity|envoy-gateway-system)$")'
       filter/istio_access:
         error_mode: ignore
         logs:
@@ -278,7 +278,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: observability-agent-pods
-  namespace: pix-integration
+  namespace: payment-integrations
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole

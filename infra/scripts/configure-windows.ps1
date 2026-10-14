@@ -8,7 +8,7 @@ if (-not $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administra
     exit
 }
 $path = "$env:SystemRoot\System32\drivers\etc\hosts"
-$aliases = @('heroassociation.test','auth.heroassociation.test','identity.lab.test','auth.lab.test','pix.lab.test','app.e2e.heroassociation.test','auth.e2e.heroassociation.test')
+$aliases = @('heroassociation.test','auth.heroassociation.test','identity.lab.test','auth.lab.test','payments.lab.test','app.e2e.heroassociation.test','auth.e2e.heroassociation.test')
 $lines = [System.Collections.Generic.List[string]]::new()
 foreach ($line in [System.IO.File]::ReadAllLines($path)) {
     $split = $line.Split('#',2)
@@ -21,7 +21,7 @@ foreach ($line in [System.IO.File]::ReadAllLines($path)) {
         $lines.Add($updated)
     } else { $lines.Add($line) }
 }
-$lines.Add('127.0.0.2 heroassociation.test identity.lab.test auth.lab.test pix.lab.test app.e2e.heroassociation.test auth.e2e.heroassociation.test # tiagolabs-local')
+$lines.Add('127.0.0.2 heroassociation.test identity.lab.test auth.lab.test payments.lab.test app.e2e.heroassociation.test auth.e2e.heroassociation.test # tiagolabs-local')
 [System.IO.File]::WriteAllLines($path, $lines, [System.Text.Encoding]::ASCII)
 Import-Certificate -FilePath $CertificatePath -CertStoreLocation Cert:\CurrentUser\Root | Out-Null
 ipconfig /flushdns | Out-Null

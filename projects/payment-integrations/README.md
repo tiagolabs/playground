@@ -4,8 +4,9 @@ A reusable payment service with provider adapters, verified payment
 confirmations, and reliable event delivery.
 
 The project is in planning and remains in `tiagolabs/playground` for now.
-Mercado Pago is the first proposed provider; additional providers can be added
-behind the same payment API when their capabilities are needed.
+MVP 1 is Pix through Mercado Pago. Stripe follows as the second provider in
+phase 2, inside the same application. Other adapters can follow concrete use
+cases. Pix is a payment method, not a separate source project.
 
 This directory currently contains design and integration documentation. There
 is no runnable payment application, Docker image, or implemented API yet.
@@ -33,6 +34,8 @@ conventions under `infra/`.
 
 - [Project specification](SPEC.md): agreed scope, ownership, safety requirements,
   and decisions still open before implementation.
+- [Roadmap and progress](ROADMAP.md): completed planning, pending implementation
+  milestones, and the evidence required to mark work complete.
 - [How to use payment-integrations](docs/how-to-use.md): proposed integration
   flow and required protections against duplicate payments and fulfillment.
 - [Naming and design references](docs/references.md): project naming rationale
@@ -45,6 +48,7 @@ conventions under `infra/`.
 projects/payment-integrations/
   AGENTS.md
   README.md
+  ROADMAP.md
   SPEC.md
   docs/
     how-to-use.md
@@ -62,6 +66,7 @@ Use `payment-integrations` as the canonical project name in documentation and
 generated content. The name covers providers and payment methods beyond the
 initial Pix integration.
 
-The existing `pix-integration` namespace and Keycloak client are a legacy lab
-reservation, documented in [the infrastructure placeholder](../../infra/apps/pix-integration/README.md).
-No infrastructure identifiers have been renamed by this documentation work.
+The versioned namespace and Keycloak role client use `payment-integrations`,
+documented in [the infrastructure reservation](../../infra/apps/payment-integrations/README.md).
+Coordinated live rollout of the renamed reservation and Lab Identity catalogue
+remains pending in the roadmap.

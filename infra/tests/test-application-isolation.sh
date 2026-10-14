@@ -12,7 +12,7 @@ cleanup() {
 }
 trap cleanup EXIT
 
-for app in hero-association lab-identity pix-integration; do
+for app in hero-association lab-identity payment-integrations; do
   kubectl -n "$app" get resourcequota/application-budget limitrange/container-defaults networkpolicy/application-boundary >/dev/null
   principal="system:serviceaccount:$app:lab-deployer"
   [[ "$(kubectl auth can-i patch deployments -n "$app" --as="$principal")" == yes ]]

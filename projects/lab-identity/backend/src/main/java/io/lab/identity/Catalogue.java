@@ -11,7 +11,7 @@ public class Catalogue {
     private final List<Application> applications = List.of(
         new Application("lab-identity", "Lab Identity", "https://identity.lab.test", "lab-identity-api", true),
         new Application("hero-association", "Hero Association", "https://heroassociation.test", "hero-association", true),
-        new Application("pix-integration", "Pix Integration", "https://pix.lab.test", "pix-integration", false));
+        new Application("payment-integrations", "payment-integrations", "https://payments.lab.test", "payment-integrations", false));
     public List<Application> all() { return applications; }
     public Application require(String id) {
         return applications.stream().filter(a -> a.id().equals(id)).findFirst().orElseThrow(NotFoundException::new);

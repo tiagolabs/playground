@@ -80,7 +80,7 @@ spec:
     - heroassociation.test
     - auth.lab.test
     - identity.lab.test
-    - pix.lab.test
+    - payments.lab.test
   rules:
     - filters:
         - type: RequestRedirect

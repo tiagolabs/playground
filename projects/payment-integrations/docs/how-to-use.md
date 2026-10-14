@@ -3,7 +3,9 @@
 This guide defines the proposed consumer integration. Its endpoints and event
 examples are draft contracts, not implemented interfaces or runnable workflows.
 The [checkout-demo](../examples/checkout-demo/README.md) will demonstrate this
-contract as a separate project.
+contract as a separate project. MVP 1 uses Pix through Mercado Pago; Stripe
+follows in phase 2 inside the same application. Payment methods and providers
+are separate capabilities, not separate consumer projects.
 
 ## Responsibilities
 

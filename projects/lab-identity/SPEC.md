@@ -4,7 +4,7 @@ Lab Identity manages study accounts and explicit access to applications in Tiago
 
 ## Identity and authorization
 
-One Keycloak realm, `lab`, provides SSO and immutable user subjects. Logical applications are `lab-identity`, `hero-association`, and planned `pix-integration`. Versioned catalogue metadata maps them to role clients `lab-identity-api`, `hero-association`, and `pix-integration`. User credentials, profile fields, account status, and application grants are stored only in Keycloak.
+One Keycloak realm, `lab`, provides SSO and immutable user subjects. Logical applications are `lab-identity`, `hero-association`, and planned `payment-integrations`. Versioned catalogue metadata maps them to role clients `lab-identity-api`, `hero-association`, and `payment-integrations`. User credentials, profile fields, account status, and application grants are stored only in Keycloak.
 
 New accounts receive `lab-identity-api:app-user` and Keycloak's built-in account self-service roles through the realm default role. Other applications require explicit client-scoped `app-user` grants. `lab-identity-api:identity-admin` permits administrative actions. Access to one application does not imply access to another. The profile's security link opens Keycloak's account console through SSO.
 
@@ -24,7 +24,7 @@ Grant/revoke and disable operations end the affected user's Keycloak sessions. A
 - Independent grant/revoke at `/api/v1/admin/users/{subject}/applications/{application}`.
 - Password reset at `/api/v1/admin/users/{subject}/password-reset`: Keycloak sends a 30-minute `UPDATE_PASSWORD` action email to local Mailpit. Passwords are set in Keycloak, never in Lab Identity.
 
-A new account has no password and must complete the password action email. Creating it does not grant Hero or Pix. The catalogue shows planned Pix even if its access is assigned, but launch is disabled until the application exists.
+A new account has no password and must complete the password action email. Creating it does not grant Hero Association or payment-integrations. The catalogue shows planned payment-integrations even if its access is assigned, but launch is disabled until the application exists.
 
 ## Isolation and delivery
 

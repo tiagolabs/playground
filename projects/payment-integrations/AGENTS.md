@@ -6,6 +6,8 @@
   generated content. Use English for source, documentation, and comments.
 - Read `SPEC.md` before behavior-changing work and update it with implemented
   behavior. Keep proposed contracts and planned capabilities clearly identified.
+- Keep `ROADMAP.md` aligned with actual progress. Complete implementation items
+  only after their relevant checks pass and record completion evidence.
 - Keep the backend independently buildable and runnable. The planned application
   image contains the backend and compiled React frontend; PostgreSQL and the
   identity server are external dependencies.

@@ -7,7 +7,7 @@
 5. Visit https://heroassociation.test and sign in with the same account. Confirm **Hero Association access required**; a game account must not be provisioned.
 6. As the administrator, grant Hero Association. Sign the member in again, open Hero, and complete Manager and agency onboarding. The shared Keycloak subject now links to a project-owned game account.
 7. Open Lab Identity in the same browser. Its login should reuse SSO without asking for the password again. Hero and Lab Identity still have separate app sessions.
-8. Grant Pix, revoke Hero, and sign the member in again. Confirm Pix's grant remains independent, its launch stays planned, and Hero is denied. Previously issued tokens expire within 60 seconds.
+8. Grant payment-integrations, revoke Hero, and sign the member in again. Confirm the payment-integrations grant remains independent, its launch stays planned, and Hero is denied. Previously issued tokens expire within 60 seconds.
 9. Disable the member; new login must fail. Re-enable it and request a new reset email if needed. Try disabling the current administrator: the API must reject it.
 10. Verify Raydow still opens on its existing HTTPS host, while lab URLs use 127.0.0.2:443 in both WSL and Windows.
 

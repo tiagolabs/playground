@@ -4,8 +4,15 @@ Planned separate example project for learning how to consume
 [payment-integrations](../../README.md). It remains inside the
 `payment-integrations` folder in `tiagolabs/playground` for now.
 
+MVP 1 demonstrates Pix through Mercado Pago. When phase 2 adds Stripe to
+payment-integrations, extend this same demo with a second payment flow using
+its existing public API/event boundary and fulfillment safeguards.
+
 This project currently contains documentation only. There is no runnable demo
 or implemented checkout.
+
+Track delivery in the shared
+[checkout-demo milestone](../../ROADMAP.md#milestone-6-separate-checkout-example).
 
 ## Minimal example
 

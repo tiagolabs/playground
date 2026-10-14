@@ -1,6 +1,11 @@
 # Lab Identity
 
-Manage lab accounts, your profile, and explicit access to Hero Association and future applications. Open https://identity.lab.test. The study administrator is `lab-admin` / `lab-admin`.
+Manage lab accounts, your profile, and explicit access to Hero Association and planned payment-integrations. Open https://identity.lab.test. The study administrator is `lab-admin` / `lab-admin`.
+
+The planned payment-integrations catalogue entry uses role client
+`payment-integrations` and keeps launch disabled. Synchronize the canonical
+shared identity client before promoting the updated Lab Identity catalogue;
+coordinated live rollout is tracked in the [payment-integrations roadmap](../payment-integrations/ROADMAP.md).
 
 Shared cluster bootstrap: [infra runbook](../../infra/README.md). Behavior: [SPEC](SPEC.md). Try the full account/access journey in [manual testing](MANUAL_TEST.md).
 

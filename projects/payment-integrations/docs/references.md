@@ -60,5 +60,6 @@ and authentication form part of a consumer-facing integration contract.
 
 The initial scope remains Mercado Pago, Pix, payment records and attempts,
 verified confirmations, duplicate-payment protection, reliable event delivery,
-and the separate checkout example. These references do not expand the initial
-scope to advanced routing, subscriptions, or card vaulting.
+and the separate checkout example. Stripe is the next provider in phase 2 of
+the same application. These references do not expand the initial scope to
+advanced routing, subscriptions, or card vaulting.

@@ -20,7 +20,7 @@ mutations. Never operate on another cluster as a side effect of lab commands.
 Keycloak belongs to the shared `identity` namespace. The `lab` realm owns
 users and credentials. Applications have client-scoped `app-user` roles;
 additional roles describe responsibilities, such as `identity-admin`.
-Grant Hero and Pix access explicitly. Application APIs enforce their audience
+Grant Hero Association and payment-integrations access explicitly. Application APIs enforce their audience
 and roles; a shared login does not grant access to every application.
 
 Project deployment/reset commands must not reset shared identity or platform

@@ -1,8 +1,8 @@
 {
   "clients": [
     {
-      "clientId": "pix-integration",
-      "name": "Pix Integration (planned)",
+      "clientId": "payment-integrations",
+      "name": "payment-integrations (planned)",
       "protocol": "openid-connect",
       "enabled": true,
       "bearerOnly": true,
@@ -10,14 +10,14 @@
     }
   ],
   "roles": {
-    "pix-integration": [
+    "payment-integrations": [
       {
         "name": "app-user",
-        "description": "Use Pix Integration"
+        "description": "Use payment-integrations"
       },
       {
         "name": "operator",
-        "description": "Operate Pix study workflows"
+        "description": "Operate payment workflows"
       }
     ]
   },

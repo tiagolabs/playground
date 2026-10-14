@@ -33,7 +33,7 @@ schemes to the Windows hosts file
 127.0.0.2 heroassociation.test
 127.0.0.2 auth.lab.test
 127.0.0.2 identity.lab.test
-127.0.0.2 pix.lab.test
+127.0.0.2 payments.lab.test
 ```
 
 The Gateway certificate and CA are generated in ignored `infra/.local/local/tls/`. Trust
