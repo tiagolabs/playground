@@ -27,7 +27,7 @@ state directory. Generated state is ignored by Git and excluded from CI source
 snapshots. Keep it out of this versioned directory.
 
 The browser binds to `127.0.0.2:80/443`, and the Kubernetes API binds to
-`127.0.0.1:16552`. Raydow uses its independent cluster and `127.0.0.1:80/443`.
+`127.0.0.1:16552`.
 Application namespaces and audiences remain independent, with explicit access grants.
 
 Daily lifecycle commands live in `infra/scripts/lab.sh`: `start`, `stop`, `status`,

@@ -172,7 +172,7 @@ and failure scenarios preserving that result. See the
 - [ ] Add CI and delivery runners under the existing infrastructure conventions,
   keeping each application's deployment and private state separate.
 - [ ] Verify image builds, namespace boundaries, identity integration, database
-  access, and provider notification reachability in the study cluster.
+  access, and provider notification reachability in the local cluster.
 - [ ] Run the complete
   [required verification matrix](docs/how-to-use.md#required-verification-before-enabling-purchases)
   and record results and any unresolved limitations.
@@ -180,7 +180,7 @@ and failure scenarios preserving that result. See the
 
 Completion requires a reproducible simulated checkout through the separate
 consumer and passing payment and fulfillment safety checks. Real-money testing
-is not a prerequisite for completing the study example.
+is not a prerequisite for completing the example.
 
 ## Milestone 8: Stripe provider, phase 2
 

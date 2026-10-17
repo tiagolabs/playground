@@ -122,7 +122,7 @@ node infra/pipelines/hero-association/provision-floci-bff-cache.mjs
 Floci runs a Redis-compatible Valkey container behind `redis://floci:6379`.
 Only containers on the Floci Docker network can reach this endpoint; port
 `6379` is not published on the host. The script verifies PING and a temporary
-SET/GET/DEL round trip. This local learning cache has no authentication,
+SET/GET/DEL round trip. This local cache has no authentication,
 transport encryption, or replica, and its contents are lost when Floci
 restarts. It is not a production cache configuration. The future BFF ECS task
 will use this endpoint; normal development keeps its separate Redis container.

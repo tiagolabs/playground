@@ -470,12 +470,12 @@ IDs must not be added for entities or exposed through the API.
   Core-only and individual-service hybrid browser checks passed; Map,
   WebSocket, and market policy also passed. See
   [LOCAL_DEVELOPMENT.md](LOCAL_DEVELOPMENT.md).
-- Hybrid service-to-service loopback forwards use dedicated Lab allocations
-  where Raydow reserves host ports for remote development. Core's Quest forward,
-  BFF's World/Quest forwards, and Quest's Core/Assets forwards use `17390–17394`.
+- Hybrid service-to-service loopback forwards use dedicated lab allocations.
+  Core's Quest forward, BFF's World/Quest forwards, and Quest's Core/Assets
+  forwards use `17390–17394`.
   The launcher sets each caller's base URL to its matching local forward. This
-  port allocation does not require running both daily clusters; switching
-  projects still uses the shared cluster policy.
+  port allocation is shared lab configuration and does not depend on which
+  application is being developed.
 - Core Quarkus dev mode validates the existing k3d PostgreSQL schema,
   disables SQL seed loading and bootstrap, and uses a distinct loopback
   port-forward. Only explicit reset/reseed commands discard disposable Core
@@ -745,11 +745,10 @@ hybrid hot-reload modes. Its backend runs JVM BFF and Core images
 with private ClusterIP Services and opt-in Istio sidecars. Separate PostgreSQL
 databases serve Core and Keycloak, and a
 separate Redis instance stores BFF sessions. Generated lab-only credentials
-and a local Keycloak realm register callbacks and issuer URLs on HTTPS port
-8443. The host maps HTTP 8088 to gateway port 80 and HTTPS 8443 to gateway
-port 443; redirects include 8443. This allocation leaves host 80/443 for
-Raydow Games, while the normal workflow still runs one project's cluster at
-a time. Port maintenance preserves cluster nodes, databases, and users, and
+and the shared Keycloak realm register callbacks and issuer URLs on HTTPS port
+443. The gateway binds HTTP and HTTPS to `127.0.0.2:80/443`; application
+redirects use the registered HTTPS origins without an explicit port.
+Port maintenance preserves cluster nodes, databases, and users, and
 updates existing Keycloak callbacks without reimporting or resetting the realm.
 Standalone Compose JVM/native runs use separate development
 ports and do not provide a second public gateway.
@@ -846,7 +845,7 @@ when the other path has already restored the original deployment and Service.
 Gateway probes and full-stack gates reserve a shared application test lock so
 concurrent commands cannot compete for the same E2E hostnames.
 All project HTTPRoutes attach to Gateway `tiagolabs-local` in `gateway-system`.
-The stable game URL is `https://heroassociation.test` on `127.0.0.2:443`,
-coexisting with Raydow on `127.0.0.1:443`. Lab Identity and Pix use separate
-namespaces and client grants. Kong is deferred. Game-only deployment and data
+The stable game URL is `https://heroassociation.test` on `127.0.0.2:443`.
+Lab Identity and Pix use separate namespaces and client grants. Kong is deferred.
+Game-only deployment and data
 reset never reset shared identity users or other applications.

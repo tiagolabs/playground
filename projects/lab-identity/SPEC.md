@@ -1,6 +1,6 @@
 # Lab Identity specification
 
-Lab Identity manages study accounts and explicit access to applications in TiagoLabs Local. It is a Quarkus Java 25 backend/BFF with a React frontend, deployed in namespace `lab-identity` at https://identity.lab.test. Shared infrastructure belongs to `../../infra/`.
+Lab Identity manages accounts and explicit access to applications in TiagoLabs Local. It is a Quarkus Java 25 backend/BFF with a React frontend, deployed in namespace `lab-identity` at https://identity.lab.test. Shared infrastructure belongs to `../../infra/`.
 
 ## Identity and authorization
 
@@ -29,8 +29,8 @@ A new account has no password and must complete the password action email. Creat
 ## Isolation and delivery
 
 Local frontend development binds Vite to `127.0.0.1:15174` with strict port
-selection, separate from Raydow's Vite allocation. Its API/auth development
-proxy targets the backend on `127.0.0.1:17280`. Full browser sign-in uses the
+selection. Its API/auth development proxy targets the backend on
+`127.0.0.1:17280`. Full browser sign-in uses the
 registered HTTPS origin; changing this Vite port does not change the issuer,
 redirect allowlist or deployed gateway route.
 

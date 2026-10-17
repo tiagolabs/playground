@@ -68,8 +68,7 @@ first setup, all eight application Deployments should be ready. To pause the
 whole environment, restore any hybrid services first, then run
 `k3d cluster stop tiagolabs-local`; this keeps the cluster data. The `status`
 command reads only the isolated k3d context; it does not change another
-Kubernetes cluster. Envoy binds `127.0.0.2:80/443`, while Raydow uses `127.0.0.1:80/443`.
-Both clusters and their independent Jenkins controllers can run concurrently.
+Kubernetes cluster. Envoy binds `127.0.0.2:80/443`.
 Shared platform setup belongs to [infra](../../infra/README.md).
 
 ## Switch a service to WSL hot reload
@@ -108,8 +107,8 @@ runtime and does not write them into Git. Host-run Quarkus services disable
 Dev Services and export telemetry to the shared k3d collector; they do not
 launch a separate LGTM container.
 
-The following service-to-service forwards use Lab's dedicated `17390–17394`
-range. `18090–18094` are reserved by Raydow's Quarkus remote-development tooling.
+The following service-to-service forwards use the lab's dedicated `17390–17394`
+range.
 Each forward binds to `127.0.0.1`; the launcher supplies its matching upstream
 URL to the caller.
 

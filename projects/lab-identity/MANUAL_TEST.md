@@ -9,6 +9,6 @@
 7. Open Lab Identity in the same browser. Its login should reuse SSO without asking for the password again. Hero and Lab Identity still have separate app sessions.
 8. Grant payment-integrations, revoke Hero, and sign the member in again. Confirm the payment-integrations grant remains independent, its launch stays planned, and Hero is denied. Previously issued tokens expire within 60 seconds.
 9. Disable the member; new login must fail. Re-enable it and request a new reset email if needed. Try disabling the current administrator: the API must reject it.
-10. Verify Raydow still opens on its existing HTTPS host, while lab URLs use 127.0.0.2:443 in both WSL and Windows.
+10. Verify https://identity.lab.test, https://auth.lab.test, and https://heroassociation.test resolve to 127.0.0.2 and serve trusted HTTPS on port 443 in both WSL and Windows.
 
 The public seed users `user1@mail.com` / `user1` and `user2@mail.com` / `user2` have existing game fixtures. `user3@mail.com` / `user3` has Hero access but no game account/Manager until first use.

@@ -146,7 +146,7 @@ curl --fail http://127.0.0.1:13200/ready
 curl --fail http://127.0.0.1:19090/-/ready
 ```
 
-This is a disposable learning setup, not a production observability topology.
+This setup uses disposable telemetry storage.
 The volumes are `emptyDir`, so Pod recreation loses telemetry. BFF and
 Core export OTLP/gRPC traces, HTTP/JVM metrics, and structured logs to
 the private Collector. Packaged JVM containers also log JSON to stdout.

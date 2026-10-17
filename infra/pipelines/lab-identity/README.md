@@ -4,9 +4,9 @@ Run from the workspace root. Choose an unused candidate ID, or omit the build
 argument to generate one; the successful build prints its promotion command.
 
 ```bash
-infra/pipelines/lab-identity/build.sh study-001
+infra/pipelines/lab-identity/build.sh build-001
 node infra/pipelines/lab-identity/candidate.mjs list
-infra/pipelines/lab-identity/deploy.sh study-001
+infra/pipelines/lab-identity/deploy.sh build-001
 ```
 
 Build verifies the backend tests and frontend production build, creates uniquely

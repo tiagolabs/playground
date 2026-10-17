@@ -35,7 +35,7 @@ added. See [naming and references](docs/references.md).
   remains available. The frontend assets are part of the standard image.
 - Use external PostgreSQL. An embedded standalone database is outside the
   initial scope.
-- Integrate with an existing Keycloak installation. In the study cluster, use
+- Integrate with an existing Keycloak installation. In the local cluster, use
   the shared identity platform with application-specific clients and permissions.
 - Keep the generic consumer example in `examples/checkout-demo/` as a separate
   application with independent build, configuration, data, access, and deployment.

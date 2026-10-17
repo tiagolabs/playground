@@ -41,7 +41,7 @@ store OIDC token state only.
 - Trust an IP address or browser-provided subject. Neither identifies a
   player reliably; the latter is spoofable.
 - Keep the BFF limit as a second layer. This complicates the effective
-  request budget and hides gateway failure; this study deployment accepts
+  request budget and hides gateway failure; this deployment accepts
   the same market limit in hybrid local development.
 
 ## Consequences and follow-up

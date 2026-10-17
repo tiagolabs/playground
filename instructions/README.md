@@ -1,7 +1,7 @@
 # Shared project conventions
 
-The `tiagolabs-local` k3d cluster is a local study platform. Shared infrastructure
-belongs in `infra/`. Study projects live in `projects/<project>/` and contain
+The `tiagolabs-local` k3d cluster hosts local applications. Shared infrastructure
+belongs in `infra/`. Projects live in `projects/<project>/` and contain
 source, Dockerfiles, build definitions, and application tests. All operational
 configuration is centralized:
 `infra/apps/<application>/` contains workloads, routes, identity declarations,
@@ -13,9 +13,14 @@ Versioned configuration stays in that directory. Generated kubeconfigs, credenti
 certificates, delivery artifacts, CI homes, and migration backups belong in ignored
 `infra/.local/local/`. Shared CLI binaries are cached in `infra/.local/tools/`.
 
-The lab uses `127.0.0.2:443`. The independent Raydow cluster uses
-`127.0.0.1:443`. Always select the explicit `k3d-tiagolabs-local` context for lab
-mutations. Never operate on another cluster as a side effect of lab commands.
+Public documentation and examples must be self-contained within TiagoLabs and
+must not name or depend on private projects or repositories.
+Describe applications, accounts, and workflows directly without repeating the
+repository's lab purpose.
+
+The lab uses `127.0.0.2:443`. Always select the explicit `k3d-tiagolabs-local`
+context for lab mutations. Never operate on another cluster as a side effect
+of lab commands.
 
 Keycloak belongs to the shared `identity` namespace. The `lab` realm owns
 users and credentials. Applications have client-scoped `app-user` roles;

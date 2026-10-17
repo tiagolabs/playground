@@ -1,6 +1,6 @@
 # Lab Identity
 
-Manage lab accounts, your profile, and explicit access to Hero Association and planned payment-integrations. Open https://identity.lab.test. The study administrator is `lab-admin` / `lab-admin`.
+Manage accounts, your profile, and explicit access to Hero Association and planned payment-integrations. Open https://identity.lab.test. The administrator is `lab-admin` / `lab-admin`.
 
 The planned payment-integrations catalogue entry uses role client
 `payment-integrations` and keeps launch disabled. Synchronize the canonical
@@ -14,8 +14,8 @@ Shared cluster bootstrap: [infra runbook](../../infra/README.md). Behavior: [SPE
 From `playground/` after shared bootstrap:
 
 ```bash
-infra/pipelines/lab-identity/build.sh study-001
-infra/pipelines/lab-identity/deploy.sh study-001
+infra/pipelines/lab-identity/build.sh build-001
+infra/pipelines/lab-identity/deploy.sh build-001
 infra/pipelines/lab-identity/deploy.sh rollback
 ```
 
@@ -41,7 +41,7 @@ npm run build
 
 Backend tests use a private mock Keycloak and OIDC test identities; they need no running cluster. Actual sign-in, cookies, SSO, and mail use the browser test against the deployed lab. The backend uses server-side Redis sessions and a restricted server-only Keycloak client. No application account database is required.
 
-For development, port-forward shared Keycloak to 17180 and project Redis to 16380, then export the four ignored `LAB_IDENTITY_*` secret files under `infra/.local/local/identity/`. Start `./mvnw quarkus:dev` on 17280 and `npm run dev` on 15174. The Vite server binds to `127.0.0.1` with strict port selection; Raydow's frontend retains 15173. Browser login remains on the registered HTTPS URL; use the deployed frontend for the full OIDC flow.
+For development, port-forward shared Keycloak to 17180 and project Redis to 16380, then export the four ignored `LAB_IDENTITY_*` secret files under `infra/.local/local/identity/`. Start `./mvnw quarkus:dev` on 17280 and `npm run dev` on 15174. The Vite server binds to `127.0.0.1` with strict port selection. Browser login remains on the registered HTTPS URL; use the deployed frontend for the full OIDC flow.
 
 Jenkins jobs `lab-identity-worktree`, `lab-identity-deploy`, and
 `lab-identity-rollback` run on the [shared local controller](../../infra/ci/jenkins/README.md).
@@ -58,4 +58,4 @@ npm ci
 npm test
 ```
 
-The tests use the public study fixtures and validate real SSO, profile/catalogue access, admin denial, and mandatory CSRF. Browser automation accepts the development certificate; verify OS trust separately with curl. The manual guide includes account creation and password action emails.
+The tests use the public fixtures and validate real SSO, profile/catalogue access, admin denial, and mandatory CSRF. Browser automation accepts the development certificate; verify OS trust separately with curl. The manual guide includes account creation and password action emails.

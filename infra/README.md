@@ -1,6 +1,6 @@
 # TiagoLabs Local infrastructure
 
-`infra/` owns all cluster, deployment, and CI configuration for the study applications. Source projects live in `projects/<project>/` and contain application source, Dockerfiles, build definitions, standalone development dependencies, and application tests. Applications have independent namespaces, data stores, secrets, identity grants, and delivery jobs.
+`infra/` owns all cluster, deployment, and CI configuration. Source projects live in `projects/<project>/` and contain application source, Dockerfiles, build definitions, standalone development dependencies, and application tests. Applications have independent namespaces, data stores, secrets, identity grants, and delivery jobs.
 
 ```text
 playground/
@@ -98,13 +98,13 @@ Keycloak stores users, passwords, profile fields, and grants. Its built-in `acco
 
 `deploy-identity.sh` imports initial users only into a fresh database, then synchronizes declared clients and role scopes without replacing existing users or their grants. Re-run it to apply client configuration. Application deploys never reset the shared identity database. Recreating the whole lab resets its local state; game-only resets remain project operations.
 
-Study fixtures: `lab-admin` / `lab-admin` manages accounts; `user1@mail.com` / `user1`, `user2@mail.com` / `user2`, and `user3@mail.com` / `user3` have Hero access. These are public local fixtures, not production credentials. The separate bootstrap administrator has a random private password in `.local/local/identity/KEYCLOAK_ADMIN_PASSWORD`; application code never uses it.
+Fixtures: `lab-admin` / `lab-admin` manages accounts; `user1@mail.com` / `user1`, `user2@mail.com` / `user2`, and `user3@mail.com` / `user3` have Hero access. These are public local fixtures, not production credentials. The separate bootstrap administrator has a random private password in `.local/local/identity/KEYCLOAK_ADMIN_PASSWORD`; application code never uses it.
 
 Lab Identity's server-only service account has `manage-users`, `query-users`, and `view-clients`, with bounded role scopes. Its API allowlists application clients and the `app-user` role. It cannot grant realm administration or change its own administrator role. Password reset uses Keycloak action emails. Session logout follows access changes; existing JWTs expire within 60 seconds.
 
 ## Shared CI
 
-[Jenkins](ci/jenkins/README.md) runs outside Kubernetes, with its controller on http://127.0.0.1:15180 and a WSL agent. Raydow Jenkins keeps port 15190. All job declarations are in `ci/jenkins/jobs/`; application delivery scripts are in `pipelines/<application>/`.
+[Jenkins](ci/jenkins/README.md) runs outside Kubernetes, with its controller on http://127.0.0.1:15180 and a WSL agent. All job declarations are in `ci/jenkins/jobs/`; application delivery scripts are in `pipelines/<application>/`.
 
 ```bash
 infra/ci/jenkins/setup-local.sh
@@ -127,8 +127,8 @@ Run from `playground/`:
 
 ```bash
 infra/scripts/install-policies.sh
-infra/pipelines/lab-identity/build.sh study-001
-infra/pipelines/lab-identity/deploy.sh study-001
+infra/pipelines/lab-identity/build.sh build-001
+infra/pipelines/lab-identity/deploy.sh build-001
 infra/apps/hero-association/operations/hybrid.sh run frontend
 infra/tests/hero-association/test-isolated-components.sh all
 infra/tests/hero-association/test-isolated-stack.sh
@@ -141,14 +141,14 @@ Kustomize bases contain workloads; overlays select environment behavior; cluster
 
 Application NetworkPolicies allow their own namespace, the Envoy dataplane, DNS, Keycloak, Istio, and telemetry. Other application namespaces and the shared Keycloak database are denied. Hero additionally permits documented hybrid WSL ports on private addresses, excluding the Kubernetes Pod/Service ranges. K3s's network-policy controller enforces these rules. Quotas and memory/request defaults bound each application's resource use, including sidecars and temporary rollout replicas.
 
-Each namespace has a `lab-deployer` service account and `application-deployer` Role. These profiles cannot deploy in another namespace, change platform resources, or manage RBAC. The local Jenkins operator still needs the lab operator kubeconfig to create/delete disposable test namespaces; it is a trusted study agent, with a single executor. `LAB_KUBECONFIG` selects an explicit kubeconfig and every mutating runner checks `k3d-tiagolabs-local`. Keep operator credentials private and use bounded namespace credentials for ordinary app deployment when separating operators.
+Each namespace has a `lab-deployer` service account and `application-deployer` Role. These profiles cannot deploy in another namespace, change platform resources, or manage RBAC. The local Jenkins operator still needs the lab operator kubeconfig to create/delete disposable test namespaces; it is a trusted agent, with a single executor. `LAB_KUBECONFIG` selects an explicit kubeconfig and every mutating runner checks `k3d-tiagolabs-local`. Keep operator credentials private and use bounded namespace credentials for ordinary app deployment when separating operators.
 
 For a namespace-scoped Lab Identity deployment, issue a short-lived kubeconfig
 with the operator, then deploy the verified candidate using that profile:
 
 ```bash
 infra/scripts/create-deployer-kubeconfig.sh lab-identity
-LAB_KUBECONFIG="$PWD/infra/.local/local/deployers/lab-identity.kubeconfig" infra/pipelines/lab-identity/deploy.sh study-001
+LAB_KUBECONFIG="$PWD/infra/.local/local/deployers/lab-identity.kubeconfig" infra/pipelines/lab-identity/deploy.sh build-001
 ```
 
 The generated file contains only the scoped service-account token and cluster
@@ -186,4 +186,4 @@ Hero gameplay or the planned payment-integrations application. `stop` stops this
 and cluster while retaining Docker volumes and private state. Lifecycle commands
 share a lock and always name this cluster; they never use `--all`.
 
-Platform scripts operate only on `tiagolabs-local`. Deleting it with `k3d cluster delete tiagolabs-local` destroys lab state and must be an explicit reset. Never stop/delete the Raydow cluster to free browser ports. The retired `hero-association` cluster was removed after migration verification.
+Platform scripts operate only on `tiagolabs-local`. Deleting it with `k3d cluster delete tiagolabs-local` destroys lab state and must be an explicit reset. Never stop or delete unrelated clusters to free browser ports. The retired `hero-association` cluster was removed after migration verification.

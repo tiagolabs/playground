@@ -19,7 +19,7 @@ rate-limit service with `REDIS_TYPE=sentinel` and all three Sentinel endpoints.
 Keep the existing fail-closed policy: if the rate-limit service cannot check
 Redis, market placement receives an Envoy `500`, never an unbounded bypass.
 
-The counters and Sentinel configuration remain ephemeral in this study lab.
+The counters and Sentinel configuration remain ephemeral.
 Hybrid local development uses this same k3d Gateway Redis group. The BFF
 session Redis remains separate.
 

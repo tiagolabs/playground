@@ -1,6 +1,6 @@
 # TiagoLabs Playground
 
-Study applications share a local Kubernetes lab while keeping their deployments and access separate.
+Applications share a local Kubernetes lab while keeping their deployments and access separate.
 Source projects live in `projects/`; shared infrastructure, deployment configuration, and CI live in `infra/`.
 
 - [Shared infrastructure](infra/README.md): `tiagolabs-local`, HTTPS, Gateway, Istio, Keycloak, observability, and Jenkins.
@@ -10,6 +10,6 @@ Source projects live in `projects/`; shared infrastructure, deployment configura
 - [checkout-demo](projects/payment-integrations/examples/checkout-demo/README.md): planned separate example consuming payment-integrations.
 - [Workspace conventions](instructions/README.md).
 
-The lab uses `127.0.0.2:443`. Raydow can continue running on `127.0.0.1:443`.
+The lab serves HTTPS on `127.0.0.2:443`.
 
 Videos: [YouTube](https://www.youtube.com/@TiagoVibesOn).

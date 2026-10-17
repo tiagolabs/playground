@@ -408,7 +408,7 @@ Ordered implementation:
   Jenkins build or k3d image change; see the
   [local environment plan](LOCAL_ENVIRONMENT_PLAN.md).
 - [ ] Add a reviewed release and retention policy before publishing images or
-  using these local artifacts outside this study environment.
+  using these artifacts outside local development.
 - [x] Include the containerized market k6 rate-limit test in the k3d
   promotion gate after browser E2E. A failure restores previous application
   image references; the isolated lab passed both suites on 2026-09-28.
@@ -519,13 +519,3 @@ These do not all block the current combat-progression slice.
 - [x] Cancellation of an optional Quest gives no payout or refund; acceptance is free.
 - [ ] Define additional tradable item categories.
 - [ ] Define agency invitation, ownership transfer, and permission rules.
-
-## Deferred — Shared Raydow Games deployments repository
-
-- [ ] Follow [the shared deployments repository plan](DEPLOYMENTS_REPOSITORY.md)
-  after the current implementation work: extract the public Hero Association
-  project into `raydowgames/hero-association` and create one public
-  `raydowgames/deployments` repository for shared k3d infrastructure and all
-  games' non-secret deployment manifests. Keep other games' source private,
-  preserve local development, and verify build, browser E2E, market k6,
-  and deployment gates before retiring Hero Association-owned k3d paths.

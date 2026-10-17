@@ -1,6 +1,6 @@
 # checkout-demo
 
-Planned separate example project for learning how to consume
+Planned separate example application consuming
 [payment-integrations](../../README.md). It remains inside the
 `payment-integrations` folder in `tiagolabs/playground` for now.
 
