@@ -1,5 +1,10 @@
 # payment-integrations roadmap
 
+> Status revised on 2026-10-14: this generic public demo is deferred. The current
+> implementation milestone uses an authenticated private platform flow outside
+> this repository. The proposal below is retained for a later simplified
+> open-source example; it is not an active implementation commitment.
+
 Track actual delivery progress here. The [specification](SPEC.md) defines scope
 and invariants; the [integration guide](docs/how-to-use.md) defines the proposed
 consumer workflow and required verification scenarios.

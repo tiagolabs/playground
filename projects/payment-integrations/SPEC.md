@@ -1,5 +1,10 @@
 # payment-integrations specification
 
+> Status revised on 2026-10-14: this generic public demo is deferred. The current
+> implementation milestone uses an authenticated private platform flow outside
+> this repository. The proposal below is retained for a later simplified
+> open-source example; it is not an active implementation commitment.
+
 ## Status and purpose
 
 This is a planned project in `tiagolabs/playground`. The directory currently
